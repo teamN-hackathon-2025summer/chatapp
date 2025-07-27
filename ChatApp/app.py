@@ -28,8 +28,19 @@ bundle_css_files(app)
 
 
 # ルートページのリダイレクト処理
+@app.route('/', method=('GET'))
+def index():
+    uid = sesson.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    return redirect(url_for('channel_view'))
+
 
 # サインアップページの表示
+@app.route('/signup', method=('GET'))
+def signup_view():
+    return render_template('auth/signup.html')
+
 
 # サインアップ処理
 
