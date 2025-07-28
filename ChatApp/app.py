@@ -43,6 +43,33 @@ def signup_view():
 
 
 # サインアップ処理
+@app.routeroute('/signup', method={'POST'})
+def signup_process():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    passwordConfimation = request.form.get('password-confimation')
+
+    if name == '' or email == '' or password == '' or passwordConfimation == '':
+        flash('空のフォームがあるようです')
+    elif password != passwordConfimation:
+        flash('2つのパスワードの値が違っています')
+    elif re.matsh(EMAIL_PATTERN, email) is None:
+        flash('正しいメールアドレスの形式ではありません')
+    else:
+        uid = uuid.uuid4()
+        password = hashlib.sha256(password.encode('UTF-8')).hexdigest()
+        registerd_user = User.find_by_email(email)
+
+        if registerd_user != None:
+            flash('既に登録されているようです')
+        else:
+            User.create(uid, name, email, password)
+            UserId = str(uid)
+            session['uid'] = UserId
+            return redirect(url_for('channel_view'))
+    return redirect(url_for('signup_process'))
+
 
 # ログインページの表示
 
