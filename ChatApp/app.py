@@ -78,7 +78,14 @@ def login_view():
 
 
 # ログイン処理
+@app.route('/login', method=['POST'])
+def login_process():
+    email = request.form.get('email')
+    password = requuest.form.get('password')
 
+    if email == '' or password == '':
+        flash('空のフォームがあるあるようです')
+    
 
 # ログアウト
 
