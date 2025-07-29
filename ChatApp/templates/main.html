@@ -1,3 +1,4 @@
+<!-- {% extends "base.html" %} -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -18,19 +19,16 @@
 
 <body>
     <!-- {% block content %} -->
-    <form name="login_form">
+    <form name="start_form">
 
-        <h1>ログインしてください</h1>
+        <h1>やさしいチャットへようこそ！</h1>
 
         <div class="form_box">
-            <p>メールアドレスを入力してください</p>
-            <input type="email" id="email" placeholder="例: example@gmail.com">
+            <p>はじめて利用する方はこちら</p>
+            <button>新しく登録する</button>
 
-            <p>パスワードを入力してください</p>
-            <input type="password" id="password" placeholder="例: yamada1234">
-
-            <input type="submit" name="login_button" value="ログイン">
-
+            <p>すでに登録済みの方はこちら</p>
+            <button>ログインする</button>
         </div>
 
     </form>
