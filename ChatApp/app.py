@@ -72,8 +72,13 @@ def signup_process():
 
 
 # ログインページの表示
+@app.route('/login', method=['GET'])
+def login_view():
+    return render_template('auth/login.html')
+
 
 # ログイン処理
+
 
 # ログアウト
 
