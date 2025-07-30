@@ -33,7 +33,7 @@ def index():
     uid = sesson.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
-    return redirect(url_for('channel_view'))
+    return redirect(url_for('channels_view'))
 
 
 # サインアップページの表示
@@ -67,7 +67,7 @@ def signup_process():
             User.create(uid, name, email, password)
             UserId = str(uid)
             session['uid'] = UserId
-            return redirect(url_for('channel_view'))
+            return redirect(url_for('channels_view'))
     return redirect(url_for('signup_process'))
 
 
@@ -85,7 +85,14 @@ def login_process():
 
     if email == '' or password == '':
         flash('空のフォームがあるあるようです')
-    
+    else:
+        user = User.find_by_email(email)
+        if user is None:
+            flash('このユーザーは存在しません')
+        else:
+            session['uid'] = user['uid']
+            return redirect(url_for('channels_view'))
+    return redirect(url_for('login_view'))
 
 # ログアウト
 
