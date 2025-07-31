@@ -94,11 +94,44 @@ def login_process():
             return redirect(url_for('channels_view'))
     return redirect(url_for('login_view'))
 
+
 # ログアウト
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login_view'))
+
 
 # チャンネル一覧ページの表示
+@app.route('/channels', method=['GET'])
+def channels_view():
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    else:
+        channels = Channel.get_all()
+        channels.reverse()
+        return render_template('channels.html', channels=channels, uid=uid)
+    
+
 
 # チャンネルの作成
+@app.route('/channels', method=['POST'])
+def create_channel():
+    uid = session.get('uid')
+    if uid is None():
+        return redirect(url_for('login_view'))
+    
+    channel_name = channel.form.get('channelTitle')
+    channel = channel.find_by_name(channel_name)
+    if channel is None:
+        channel_discription = request.form.get('channelDesscription')
+        channel.create(uid, channel_name, channel_discription)
+        return redirect(url_for('channel_view'))
+    else:
+        error = '既に同じ名前のチャンネルが存在しています'
+        return render_template('error/error.html', error_message=error)
+    
 
 # チャンネルの更新
 
