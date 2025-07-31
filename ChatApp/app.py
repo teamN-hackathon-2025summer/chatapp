@@ -81,7 +81,7 @@ def login_view():
 @app.route('/login', method=['POST'])
 def login_process():
     email = request.form.get('email')
-    password = requuest.form.get('password')
+    password = request.form.get('password')
 
     if email == '' or password == '':
         flash('空のフォームがあるあるようです')
@@ -125,8 +125,8 @@ def create_channel():
     channel_name = channel.form.get('channelTitle')
     channel = channel.find_by_name(channel_name)
     if channel is None:
-        channel_discription = request.form.get('channelDesscription')
-        channel.create(uid, channel_name, channel_discription)
+        channel_description = request.form.get('channelDesscription')
+        channel.create(uid, channel_name, channel_description)
         return redirect(url_for('channel_view'))
     else:
         error = '既に同じ名前のチャンネルが存在しています'
@@ -134,6 +134,19 @@ def create_channel():
     
 
 # チャンネルの更新
+@app.route('/channels/update/<cid>', method=['POST'])
+def update_channel(cid):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    
+    channel_name = request.form.get('channelTitle')
+    channel_description = request.sorm.get('channelDescription')
+
+    Channel.update(uid, channel_name, channel_description, cid)
+    return redirect(f'/channels/{cid}/messages')
+
+
 
 # チャンネルの削除
 
