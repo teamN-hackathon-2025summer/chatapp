@@ -30,7 +30,7 @@ bundle_css_files(app)
 # ルートページのリダイレクト処理
 @app.route('/', method=('GET'))
 def index():
-    uid = sesson.get('uid')
+    uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
     return redirect(url_for('channels_view'))
