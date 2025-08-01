@@ -149,6 +149,20 @@ def update_channel(cid):
 
 
 # チャンネルの削除
+@app.route('/channels/delete/<cid>', method=['POST'])
+def delete_channel(cid):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    
+    channel = Channel.find_by_cid(cid)
+
+    if channel["uid"] != uid:
+        flash('チャンネルは作成者のみ削除可能です')
+    else:
+        Channel.delete(cid)
+    return redirect(url_for('channels_view'))
+
 
 # チャンネル詳細ページの表示（各チャンネル内で、そのチャンネルに属している全メッセージを表示させる）
 
