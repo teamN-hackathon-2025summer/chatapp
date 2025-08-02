@@ -19,25 +19,40 @@ app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
 
 # ブラウザに静的ファイル（CSSや画像など）を長くキャッシュさせる設定。
 # 開発中は変更がすぐ反映されないことがあるため、コメントアウトするのが無難です。
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 2678400
+
+# app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 2678400
 
 # 複数のCSSファイルを1つにまとめて圧縮（バンドル）する処理を実行。
-bundle_css_files(app)
+# bundle_css_files(app)
 
 
-# ルートページのリダイレクト処理
+# uidを取得済ならchannels.htmlへ,それ以外ならトップページをmain.htmlにするように書き換え
 @app.route('/', methods=['GET'])
 def index():
     uid = session.get('uid')
     if uid is None:
-        return redirect(url_for('login_view'))
+        return redirect(url_for('main_view'))
     return redirect(url_for('channels_view'))
 
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+# ルートページのリダイレクト処理
+# @app.route('/', methods=['GET'])
+# def index():
+#     uid = session.get('uid')
+#     if uid is None:
+#         return redirect(url_for('login_view'))
+#     return redirect(url_for('channels_view'))
+
+# メインページの表示 *追加
+@app.route('/main' , methods=['GET'])
+def main_view():
+    return render_template('main.html')
 
 # サインアップページの表示
 @app.route('/signup', methods=['GET'])
 def signup_view():
-    return render_template('auth/signup.html')
+    return render_template('/auth/signup.html')
 
 
 # サインアップ処理
@@ -213,6 +228,8 @@ def page_not_found(error):
 def internal_server_error(error):
     return render_template('error/500.html'),500
 
-
+# /templates内の変更をDockerを再起動せずに反映させる(HTML反映テスト用)
+# if __name__ == '__main__':
+#     app.run(debug=True, host='0.0.0.0')  # Docker内で動かすなら host=0.0.0.0
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)

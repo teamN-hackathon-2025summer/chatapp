@@ -8,16 +8,31 @@
 
     <!-- フォント Baloo Paaji 2 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&display=swap" rel="stylesheet">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/ChatApp/static/css/reset.css">
-    <link rel="stylesheet" href="/ChatApp/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- javaScript -->
+    <script src="{{ url_for('static', filename='js/template_popup.js') }}"></script>
 </head>
 
-<body>
-    <!-- {% block content %} -->
+<!-- テスト用(アプリ実行の時はコメントアウトする) -->
     
-    <!-- {% endblock %} -->
+    <!-- CSS -->
+    <!-- <link rel="stylesheet" href="/ChatApp/static/css/reset.css">
+
+    <link rel="stylesheet" href="/ChatApp/static/css/style.css">
+</head> -->
+
+
+<body>
+    <!-- ヘッダー(必要なら) -->
+
+    {% block content %}
+
+    {% endblock %}
 </body>
