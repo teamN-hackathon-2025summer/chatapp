@@ -5,7 +5,7 @@ import uuid
 import re
 import os
 
-from models import User, Channel, Messsage
+from models import User, Channel, Message
 from util.assets import bundle_css_files
 
 
@@ -178,6 +178,40 @@ def detail(cid):
 
 
 # メッセージの投稿
+@app.route('/channels/<cid>/messages', method=['POST'])
+def create_message(cid):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    
+    message = request.form.get('message')
+
+    if message:
+        Message.create(uid, cid, message)
+
+    return redirect('/channels/{cid}/messages' .format(cid = cid))
+
 
 # メッセージの削除
+@app.route('/channels/<cid>/messages/<message_id>', method = ['POST'])
+def delete_message(cid, message_id):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    
+    if message_id:
+        Message.delete(message_id)
+    return redirect('/channels/{cid}/messages' .format(cid = cid))
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('error/404.html'),404
+
+@app.error_handler(500)
+def internal_server_error(error):
+    return render_template('error/500.html'),500
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", debug=True)
+
 
