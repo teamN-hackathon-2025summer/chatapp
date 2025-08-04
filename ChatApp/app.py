@@ -165,6 +165,17 @@ def delete_channel(cid):
 
 
 # チャンネル詳細ページの表示（各チャンネル内で、そのチャンネルに属している全メッセージを表示させる）
+@app.route('channels/<cid>/messages', method=['GET'])
+def detail(cid):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    
+    channel = Channel.find_by_cid(cid)
+    messages = Message.get_all(cid)
+
+    return render_template('message.html', messages=messages, channel=channel, cid=cid)
+
 
 # メッセージの投稿
 
