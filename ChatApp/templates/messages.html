@@ -26,7 +26,6 @@
 <!-- </head> -->
 <!-- ここまでコメントアウト -->
 
-<body>
     {% block content %}
 
     <!-- タイムライン部分 -->
@@ -78,7 +77,8 @@
                     </ul>
                 </div>
 
-                <input type="text" id="send_message" required></input>
+                <input type="text" id="send_message" required>
+                <!-- inputは終了タグいらない -->
                 <button type="submit" id="send_btn">送信</button>
             </form>
     
@@ -86,8 +86,5 @@
         </div>
 </div>
 
-
-
-
     {% endblock %}
-</body>
+

@@ -47,8 +47,7 @@ form input[type="submit"]:hover {
 /* 入力部分 */
 form input[type="email"],
 form input[type="password"],
-form input[type="password-confirmation"],
-form input[type="name"] {
+form input[type="text"] {
   border: 0;
   background-color: white;
   display: block;
@@ -64,8 +63,7 @@ form input[type="name"] {
 /* 入力画面をクリックした時に色が変わる */
 form input[type="email"]:focus,
 form input[type="password"]:focus,
-form input[type="password-confirmation"]:focus,
-form input[type="name"]:focus {
+form input[type="text"]:focus {
   background-color: #ffff80;
 }
 
