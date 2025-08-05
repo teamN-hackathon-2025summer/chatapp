@@ -20,7 +20,7 @@ app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
                                            
 # ブラウザに静的ファイル（CSSや画像など）を長くキャッシュさせる設定。
 # 開発中は変更がすぐに反映されないことがあるため、コメントアウトするのが無難です。
-app.config('SEND_FILE_MAX_AGE_DEFAULT') = 2678400
+# app.config('SEND_FILE_MAX_AGE_DEFAULT') = 2678400
 
 
 # 複数のCSSファイルを1つにまとめて圧縮（バンドル）する処理を実行。
