@@ -1,21 +1,90 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>やさしいチャット(仮)</title>
+{% extends "base.html" %}
+
+
+<!-- テスト用(アプリ実行の時はコメントアウトする) -->
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="ja"> -->
+<!-- <head> -->
+    <!-- <meta charset="UTF-8"> -->
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <!-- <title>やさしいチャット(仮)</title> -->
 
     <!-- フォント Baloo Paaji 2 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&display=swap" rel="stylesheet">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&display=swap" rel="stylesheet"> -->
+    
+        <!-- CSS -->
+    <!-- <link rel="stylesheet" href="/ChatApp/static/css/reset.css"> -->
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="/ChatApp/static/css/reset.css">
-    <link rel="stylesheet" href="/ChatApp/static/css/style.css">
-</head>
+    <!-- <link rel="stylesheet" href="/ChatApp/static/css/style.css"> -->
 
-<body>
-  
-</body>
+    <!-- javascript -->
+    <!-- <script src="/ChatApp/static/js/template_popup.js"></script> -->
+
+<!-- </head> -->
+<!-- ここまでコメントアウト -->
+
+    {% block content %}
+
+    <!-- タイムライン部分 -->
+<div class="chat_conteiner">
+        <div class="chat_messages">
+            {% for msg in messages %}
+                {% if msg.uid == uid %}
+                    <!-- 自分のメッセージ -->
+                    <div class="message my_message">
+                        <!-- アイコン -->
+                        <div class="my_icon">■</div>
+                        <!-- 吹き出し -->
+                        <div class="my_bubble">
+                            <!-- formで受け取ったメッセージが表示される -->
+                            {{ msg.message }}                    
+                        </div>
+                    </div>
+                {% else %}
+                
+                <!-- 相手のメッセージ -->
+                <div class="message other_message">
+                    <!-- 相手のアイコン -->
+                    <div class="other_icon">●</div>
+                    <!-- 相手の吹き出し -->
+                    <div class="other_bubble">
+                        {{ msg.message }}
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    
+    
+        <!-- テキスト入力、送信ボタン、定型文ボタン -->
+        <div class="send_box">
+            <p>▼チャットを始める</p>
+            <!-- このformが送信されるとapp.pyで記述したcreate_message関数が呼び出される -->
+            <form action="{{ url_for('create_message' , cid=channel.cid) }}" method="post">
+                <!-- name="message"に入れたテキストが request.form.get("message")で受け取られ投稿される -->
+                <button type="button" id="template_btn">定型文</button>
+
+                <!-- 定型文ポップアップ -->
+                <div id="template_popup">
+                    <button class="close_btn">✕閉じる</button>
+                    <ul>
+                        <li class="template_text">おはようございます</li>
+                        <li class="template_text">元気ですか？</li>
+                        <li class="template_text">助けてください</li>
+                    </ul>
+                </div>
+
+                <input type="text" id="send_message" required>
+                <!-- inputは終了タグいらない -->
+                <button type="submit" id="send_btn">送信</button>
+            </form>
+    
+            <!-- delete_message関数呼び出す削除ボタンの実装(予定) -->
+        </div>
+</div>
+
+    {% endblock %}
+

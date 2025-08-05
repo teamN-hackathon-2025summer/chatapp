@@ -1,36 +1,25 @@
-<!-- {% extends "base.html" %} -->
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>やさしいチャット(仮)</title>
-
-    <!-- フォント Baloo Paaji 2 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&display=swap" rel="stylesheet">
-
+{% extends "base.html" %}
+<!-- テスト用(アプリ実行の時はコメントアウトする) -->
+    
     <!-- CSS -->
-    <link rel="stylesheet" href="/ChatApp/static/css/reset.css">
-    <link rel="stylesheet" href="/ChatApp/static/css/style.css">
-</head>
+    <!-- <link rel="stylesheet" href="/ChatApp/static/css/reset.css"> -->
 
-<body>
-    <!-- {% block content %} -->
+    <!-- <link rel="stylesheet" href="/ChatApp/static/css/style.css"> -->
+<!-- </head> -->
+
+    {% block content %}
     <form name="start_form">
 
         <h1>やさしいチャットへようこそ！</h1>
 
         <div class="form_box">
             <p>はじめて利用する方はこちら</p>
-            <button>新しく登録する</button>
+            <!-- signup.htmlへ遷移 -->
+            <a href="{{ url_for('signup_view') }}" class="a_button">新しく登録する</a>
 
             <p>すでに登録済みの方はこちら</p>
-            <button>ログインする</button>
+            <!-- login.htmlへ遷移 -->
+            <a href="{{ url_for('login_view') }}" class="a_button">ログインする</a>
         </div>
-
     </form>
-    <!-- {% endblock %} -->
-</body>
+    {% endblock %}
