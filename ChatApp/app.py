@@ -24,7 +24,12 @@ app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
 
 
 # 複数のCSSファイルを1つにまとめて圧縮（バンドル）する処理を実行。
-bundle_css_files(app)
+# bundle_css_files(app)
+
+# メインページの表示
+@app.route('/main', method=['GET'])
+def main_view():
+    return render_template('main.html')
 
 
 # ルートページのリダイレクト処理
@@ -32,7 +37,7 @@ bundle_css_files(app)
 def index():
     uid = session.get('uid')
     if uid is None:
-        return redirect(url_for('login_view'))
+        return redirect(url_for('main_view'))
     return redirect(url_for('channels_view'))
 
 
