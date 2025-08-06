@@ -149,7 +149,7 @@ class Message:
 
 
     @classmethod
-    def create(cls,cid):
+    def get_all(cls,cid):
         conn=db_pool.get_conn()
         try:
             with conn.cursor() as cur:

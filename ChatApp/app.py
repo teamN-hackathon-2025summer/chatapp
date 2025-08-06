@@ -59,7 +59,7 @@ def signup_process():
         flash('空のフォームがあるようです')
     elif password != passwordConfimation:
         flash('2つのパスワードの値が違っています')
-    elif re.matsh(EMAIL_PATTERN, email) is None:
+    elif re.match(EMAIL_PATTERN, email) is None:
         flash('正しいメールアドレスの形式ではありません')
     else:
         uid = uuid.uuid4()
@@ -124,14 +124,14 @@ def channels_view():
 @app.route('/channels', methods=['POST'])
 def create_channel():
     uid = session.get('uid')
-    if uid is None():
+    if uid is None:
         return redirect(url_for('login_view'))
     
-    channel_name = channel.form.get('channelTitle')
-    channel = channel.find_by_name(channel_name)
+    channel_name = request.form.get('channelTitle')
+    channel = Channel.find_by_name(channel_name)
     if channel is None:
         channel_description = request.form.get('channelDesscription')
-        channel.create(uid, channel_name, channel_description)
+        Channel.create(uid, channel_name, channel_description)
         return redirect(url_for('channel_view'))
     else:
         error = '既に同じ名前のチャンネルが存在しています'
@@ -146,7 +146,7 @@ def update_channel(cid):
         return redirect(url_for('login_view'))
     
     channel_name = request.form.get('channelTitle')
-    channel_description = request.sorm.get('channelDescription')
+    channel_description = request.form.get('channelDescription')
 
     Channel.update(uid, channel_name, channel_description, cid)
     return redirect(f'/channels/{cid}/messages')
