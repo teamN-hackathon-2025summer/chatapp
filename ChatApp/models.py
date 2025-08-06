@@ -41,7 +41,7 @@ class User:
             db_pool.release(conn)
 
 #チャンネルクラス
-class channnel:
+class Channel:
     @classmethod
     def create(cls,uid,new_channel_name,new_channel_descreption):
         conn=db_pool.get_conn()
