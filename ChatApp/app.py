@@ -179,7 +179,7 @@ def detail(cid):
     channel = Channel.find_by_cid(cid)
     messages = Message.get_all(cid)
 
-    return render_template('message.html', messages=messages, channel=channel, cid=cid)
+    return render_template('messages.html', messages=messages, channel=channel, uid=uid)
 
 
 # メッセージの投稿
