@@ -14,7 +14,7 @@ EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 SESSION_DAYS = 30
 
 app = Flask(__name__)
-app.secret.key = os.getenv('SECRET_KEY', uuid.uuid4().hex)
+app.secret_key = os.getenv('SECRET_KEY', uuid.uuid4().hex)
 app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
 
                                            
@@ -27,13 +27,13 @@ app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
 # bundle_css_files(app)
 
 # メインページの表示
-@app.route('/main', method=['GET'])
+@app.route('/main', methods=['GET'])
 def main_view():
     return render_template('main.html')
 
 
 # ルートページのリダイレクト処理
-@app.route('/', method=('GET'))
+@app.route('/', methods=['GET'])
 def index():
     uid = session.get('uid')
     if uid is None:
@@ -42,13 +42,13 @@ def index():
 
 
 # サインアップページの表示
-@app.route('/signup', method=('GET'))
+@app.route('/signup', methods=['GET'])
 def signup_view():
     return render_template('auth/signup.html')
 
 
 # サインアップ処理
-@app.routeroute('/signup', method={'POST'})
+@app.route('/signup', methods=['POST'])
 def signup_process():
     name = request.form.get('name')
     email = request.form.get('email')
@@ -73,17 +73,17 @@ def signup_process():
             UserId = str(uid)
             session['uid'] = UserId
             return redirect(url_for('channels_view'))
-    return redirect(url_for('signup_process'))
+    return redirect(url_for('signup_view'))
 
 
 # ログインページの表示
-@app.route('/login', method=['GET'])
+@app.route('/login', methods=['GET'])
 def login_view():
     return render_template('auth/login.html')
 
 
 # ログイン処理
-@app.route('/login', method=['POST'])
+@app.route('/login', methods=['POST'])
 def login_process():
     email = request.form.get('email')
     password = request.form.get('password')
@@ -108,7 +108,7 @@ def logout():
 
 
 # チャンネル一覧ページの表示
-@app.route('/channels', method=['GET'])
+@app.route('/channels', methods=['GET'])
 def channels_view():
     uid = session.get('uid')
     if uid is None:
@@ -121,7 +121,7 @@ def channels_view():
 
 
 # チャンネルの作成
-@app.route('/channels', method=['POST'])
+@app.route('/channels', methods=['POST'])
 def create_channel():
     uid = session.get('uid')
     if uid is None():
@@ -139,7 +139,7 @@ def create_channel():
     
 
 # チャンネルの更新
-@app.route('/channels/update/<cid>', method=['POST'])
+@app.route('/channels/update/<cid>', methods=['POST'])
 def update_channel(cid):
     uid = session.get('uid')
     if uid is None:
@@ -154,7 +154,7 @@ def update_channel(cid):
 
 
 # チャンネルの削除
-@app.route('/channels/delete/<cid>', method=['POST'])
+@app.route('/channels/delete/<cid>', methods=['POST'])
 def delete_channel(cid):
     uid = session.get('uid')
     if uid is None:
@@ -170,7 +170,7 @@ def delete_channel(cid):
 
 
 # チャンネル詳細ページの表示（各チャンネル内で、そのチャンネルに属している全メッセージを表示させる）
-@app.route('channels/<cid>/messages', method=['GET'])
+@app.route('/channels/<cid>/messages', methods=['GET'])
 def detail(cid):
     uid = session.get('uid')
     if uid is None:
@@ -183,7 +183,7 @@ def detail(cid):
 
 
 # メッセージの投稿
-@app.route('/channels/<cid>/messages', method=['POST'])
+@app.route('/channels/<cid>/messages', methods=['POST'])
 def create_message(cid):
     uid = session.get('uid')
     if uid is None:
@@ -198,7 +198,7 @@ def create_message(cid):
 
 
 # メッセージの削除
-@app.route('/channels/<cid>/messages/<message_id>', method = ['POST'])
+@app.route('/channels/<cid>/messages/<message_id>', methods = ['POST'])
 def delete_message(cid, message_id):
     uid = session.get('uid')
     if uid is None:
@@ -212,7 +212,7 @@ def delete_message(cid, message_id):
 def page_not_found(error):
     return render_template('error/404.html'),404
 
-@app.error_handler(500)
+@app.errorhandler(500)
 def internal_server_error(error):
     return render_template('error/500.html'),500
 
