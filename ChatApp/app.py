@@ -59,7 +59,7 @@ def signup_process():
         flash('空のフォームがあるようです')
     elif password != passwordConfimation:
         flash('2つのパスワードの値が違っています')
-    elif re.matsh(EMAIL_PATTERN, email) is None:
+    elif re.match(EMAIL_PATTERN, email) is None:
         flash('正しいメールアドレスの形式ではありません')
     else:
         uid = uuid.uuid4()
@@ -124,7 +124,7 @@ def channels_view():
 @app.route('/channels', methods=['POST'])
 def create_channel():
     uid = session.get('uid')
-    if uid is None():
+    if uid is None:
         return redirect(url_for('login_view'))
     
     channel_name = channel.form.get('channelTitle')
@@ -179,7 +179,7 @@ def detail(cid):
     channel = Channel.find_by_cid(cid)
     messages = Message.get_all(cid)
 
-    return render_template('message.html', messages=messages, channel=channel, cid=cid)
+    return render_template('messages.html', messages=messages, channel=channel, uid=uid)
 
 
 # メッセージの投稿
