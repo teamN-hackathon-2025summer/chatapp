@@ -14,7 +14,7 @@ class User:
         try:
             #コネクションからカーソルを取得する
             with conn.cursor() as cur:
-                sql="INSERT INTO user (uid,user_name,email,password) VALUES (%s,%s,%s,%s);"
+                sql="INSERT INTO users (uid,user_name,email,password) VALUES (%s,%s,%s,%s);"
                 #SQLを実行し、パラメータ（uid, name, email, password）を埋め込む
                 cur.execute(sql,(uid,name,email,password,))
                 # データベースに変更を反映（保存）する
