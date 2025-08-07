@@ -73,7 +73,7 @@ def signup_process():
             UserId = str(uid)
             session['uid'] = UserId
             return redirect(url_for('channels_view'))
-    return redirect(url_for('signup_view'))
+    return redirect(url_for('login_view'))
 
 
 # ログインページの表示
@@ -95,8 +95,12 @@ def login_process():
         if user is None:
             flash('このユーザーは存在しません')
         else:
-            session['uid'] = user['uid']
-            return redirect(url_for('channels_view'))
+            hashPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            if hashPassword != user["password"]:
+                flash('パスワードが間違っています！')
+            else:
+                session['uid'] = user["uid"]
+                return redirect(url_for('channels_view'))
     return redirect(url_for('login_view'))
 
 
