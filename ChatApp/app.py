@@ -1,13 +1,4 @@
-from flask import (
-    Flask,
-    request,
-    redirect,
-    render_template,
-    session,
-    flash,
-    abort,
-    url_for,
-)
+from flask import Flask, request, redirect, render_template, session, flash, abort,url_for
 from datetime import timedelta
 import hashlib
 import uuid
@@ -41,6 +32,11 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 # bundle_css_files(app)
 
 
+# メインページの表示 *追加
+@app.route("/main", methods=["GET"])
+def main_view():
+    return render_template("main.html")
+
 # uidを取得済ならchannels.htmlへ,それ以外ならトップページをmain.htmlにするように書き換え
 @app.route("/", methods=["GET"])
 def index():
@@ -57,17 +53,10 @@ def index():
 #         return redirect(url_for('login_view'))
 #     return redirect(url_for('channels_view'))
 
-
-# メインページの表示 *追加
-@app.route("/main", methods=["GET"])
-def main_view():
-    return render_template("main.html")
-
-
 # サインアップページの表示
 @app.route("/signup", methods=["GET"])
 def signup_view():
-    return render_template("/auth/signup.html")
+    return render_template("auth/signup.html")
 
 
 # サインアップ処理
