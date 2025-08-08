@@ -36,6 +36,7 @@ def main_view():
 @app.route('/', methods=['GET'])
 def index():
     uid = session.get('uid')
+    print(uid)
     if uid is None:
         return redirect(url_for('main_view'))
     return redirect(url_for('channels_view'))
@@ -53,11 +54,11 @@ def signup_process():
     name = request.form.get('name')
     email = request.form.get('email')
     password = request.form.get('password')
-    passwordConfimation = request.form.get('password-confimation')
+    passwordConfirmation = request.form.get('password-confirmation')
 
-    if name == '' or email == '' or password == '' or passwordConfimation == '':
+    if name == '' or email == '' or password == '' or passwordConfirmation == '':
         flash('空のフォームがあるようです')
-    elif password != passwordConfimation:
+    elif password != passwordConfirmation:
         flash('2つのパスワードの値が違っています')
     elif re.match(EMAIL_PATTERN, email) is None:
         flash('正しいメールアドレスの形式ではありません')
