@@ -30,7 +30,7 @@ class User:
         conn=db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql="SELECT * FROM users WHERE emails=%s;"
+                sql="SELECT * FROM users WHERE email=%s;"
                 cur.execute(sql,(email,))
                 user=cur.fetchone()
             return user
