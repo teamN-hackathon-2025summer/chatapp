@@ -74,7 +74,7 @@ def signup_process():
             UserId = str(uid)
             session['uid'] = UserId
             return redirect(url_for('channels_view'))
-    return redirect(url_for('login_view'))
+    return redirect(url_for('signup_view'))
 
 
 # ログインページの表示
