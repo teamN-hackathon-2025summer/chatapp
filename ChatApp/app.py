@@ -213,6 +213,17 @@ def delete_message(cid, message_id):
         Message.delete(message_id)
     return redirect('/channels/{cid}/messages' .format(cid = cid))
 
+
+# いいね機能 実装
+#    @app.route('/channels/<cid>/messages/message_id/like', metthods = ['POST'])
+#    def likes(cid, message_id):
+#        uid = session.get('uid')
+#        if uid is None:
+#            return redirect(url_for('login_view'))
+#    Message
+        
+
+
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('error/404.html'),404
