@@ -96,8 +96,12 @@ def login_process():
         if user is None:
             flash('このユーザーは存在しません')
         else:
-            session['uid'] = user['uid']
-            return redirect(url_for('channels_view'))
+            hashPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            if hashPassword != user["password"]:
+                flash('パスワードが間違っています！')
+            else:
+                session['uid'] = user["uid"]
+                return redirect(url_for('channels_view'))
     return redirect(url_for('login_view'))
 
 
@@ -208,6 +212,17 @@ def delete_message(cid, message_id):
     if message_id:
         Message.delete(message_id)
     return redirect('/channels/{cid}/messages' .format(cid = cid))
+
+
+# いいね機能 実装
+#    @app.route('/channels/<cid>/messages/message_id/like', metthods = ['POST'])
+#    def likes(cid, message_id):
+#        uid = session.get('uid')
+#        if uid is None:
+#            return redirect(url_for('login_view'))
+#    Message
+        
+
 
 @app.errorhandler(404)
 def page_not_found(error):
