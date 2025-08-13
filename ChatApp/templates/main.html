@@ -1,25 +1,15 @@
 {% extends "base.html" %}
-<!-- テスト用(アプリ実行の時はコメントアウトする) -->
-    
-    <!-- CSS -->
-    <!-- <link rel="stylesheet" href="/ChatApp/static/css/reset.css"> -->
 
-    <!-- <link rel="stylesheet" href="/ChatApp/static/css/style.css"> -->
-<!-- </head> -->
-
-    {% block content %}
-    <form name="start_form">
-
+{% block content %}
+    <div class="form_box">
         <h1>やさしいチャットへようこそ！</h1>
+        <h2>はじめて利用する方</h2>
+        <!-- signup.htmlへ遷移 -->
+        <a href="{{ url_for('signup_view') }}" class="a_button">新しく登録する</a>
 
-        <div class="form_box">
-            <p>はじめて利用する方はこちら</p>
-            <!-- signup.htmlへ遷移 -->
-            <a href="{{ url_for('signup_view') }}" class="a_button">新しく登録する</a>
+        <h2>すでに登録済みの方</h2>
+        <!-- login.htmlへ遷移 -->
+        <a href="{{ url_for('login_view') }}" class="a_button">ログインする</a>
+    </div>
 
-            <p>すでに登録済みの方はこちら</p>
-            <!-- login.htmlへ遷移 -->
-            <a href="{{ url_for('login_view') }}" class="a_button">ログインする</a>
-        </div>
-    </form>
-    {% endblock %}
+{% endblock %}
