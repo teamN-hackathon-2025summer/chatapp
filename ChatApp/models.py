@@ -7,7 +7,7 @@ from util.DB import DB
 db_pool = DB.init_db_pool()
 
 
-# ユーザークラス
+# ユーザークラス トランザクション処理
 class User:
     @classmethod
     def create(cls, uid, name, email, password):
@@ -185,10 +185,10 @@ class Message:
         try:
             with conn.cursor() as cur:
                 sql = """
-                SELECT id, u.uid, user_name, message 
-                FROM messages AS m 
-                INNER JOIN users AS u ON m.uid = u.uid 
-                WHERE cid = %s 
+                SELECT id, u.uid, user_name, message
+                FROM messages AS m
+                INNER JOIN users AS u ON m.uid = u.uid
+                WHERE cid = %s
                 ORDER BY id ASC;
             """
                 cur.execute(sql, (cid,))

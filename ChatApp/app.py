@@ -14,9 +14,10 @@ EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 SESSION_DAYS = 30
 
 # 静的ファイルやテンプレートのパスが ChatApp/ ディレクトリにあるため、明示する設定を追加
-app = Flask(
-    __name__, static_folder="ChatApp/static", template_folder="ChatApp/templates"
-)
+# app = Flask(__name__, static_folder="ChatApp/static", template_folder="ChatApp/templates"
+# )
+
+app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", uuid.uuid4().hex)
 app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
 

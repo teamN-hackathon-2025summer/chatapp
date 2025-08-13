@@ -1,7 +1,63 @@
-{% extends "base.html" %}
+<!-- {% extends "base.html" %} -->
 
 
+<!-- {% block content %} -->
 
-{% block content %}
-<h1>チャンネル一覧</h1>
-{% endblock %}
+<!-- 開閉ボタン -->
+<button id="toggle_sidebar" class="toggle_btn">サイドバー表示 / 非表示</button>
+
+<!-- サイドバー -->
+<div id="sidebar" class="sidebar">
+
+  <!-- 新しいチャンネル作成フォーム -->
+  <!-- ボタンを押すと開く折り畳み式にする -->
+  <button type="button" class="toggle_form_btn" data-target="createForm">チャンネルを作成</button>
+  <div id="createForm"  class="hidden_form">
+    <form action="{{ url_for('create_channel') }}" method="POST">
+      <input type="text" name="channelTitle" placeholder="チャンネル名" required>
+      <input type="text" name="channelDescription" placeholder="チャンネルの説明">
+      <button type="submit">作成</button>
+    </form>
+  </div>
+
+  <!-- チャンネル一覧 -->
+  <ul>
+    {% for ch in channels %} <!-- ch = 全チャンネルを順番に取得して変数chに入れる 全チャンネルを表示する -->
+
+    <li> <!-- チャンネル名表示 -->
+      <a href="{{ url_for('detail', cid=ch['cid']) }}">{{ ch['channel_name'] }}</a>
+
+      {% if ch['uid'] == uid %}
+
+      <!-- 名前変更ボタン -->
+      <button type="button" class="toggle_form_btn" data-target="renameForm{{ ch['cid'] }}">編集</button>
+      <!-- 名前変更フォーム -->
+      <div id="renameForm{{ ch['cid'] }}" class="hidden_form">
+        <form action="{{ url_for('update_channel', cid=ch['cid']) }}" method="POST">
+          <input type="text" name="channelTitle" placeholder="新しい名前">
+          <input type="text" name="channelDescription" placeholder="チャンネルの説明を変更">
+          <button type="submit">変更</button>
+        </form>
+      </div>
+
+      <!-- 削除確認 -->
+      <form action="{{ url_for('delete_channel', cid=ch['cid']) }}" method="POST" onsubmit="return confirm('本当に削除しますか？')">
+        <button type="submit" class="delete-btn">削除</button>
+      </form>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  <!-- ログアウト -->
+  <form action="{{ url_for('logout') }}" method="GET">
+    <button type="submit" class="logout-btn">ログアウト</button>
+  </form>
+</div>
+
+<!-- メインコンテンツ -->
+<div class="main-content">
+  <h1>ようこそ</h1>
+  <p>ここにチャンネルの説明や案内を表示できます。</p>
+</div>
+
+<!-- {% endblock %} -->

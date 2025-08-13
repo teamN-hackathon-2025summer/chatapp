@@ -1,7 +1,7 @@
 import os
 import pymysql
 from pymysqlpool.pool import Pool
-
+# pool 箱の中の接続部分
 
 class DB:
     @classmethod

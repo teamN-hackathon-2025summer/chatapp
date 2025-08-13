@@ -1,25 +1,33 @@
 {% extends "base.html" %}
 
-    {% block content %}
+{% block content %}
     <form name="signup_form" method="post" action="{{ url_for('signup_process' ) }}">
-
+    
         <h1>アカウントを作成します</h1>
-
+    
         <div class="form_box">
             <p>お名前を入力してください</p>
             <input type="text" name="name" placeholder="例: 山田太郎" maxlength="8">
-
+    
             <p>メールアドレスを入力してください(必須)</p>
             <input type="email" name="email" placeholder="例: example@gmail.com">
-
+    
             <p>パスワードを入力してください(必須)(8文字以上/英数字)</p>
             <input type="password" name="password" placeholder="例: yamada1234" minlength="8">
-
+    
             <p>もう一度パスワードを入力してください(必須)</p>
             <input type="password" name="password-confirmation" placeholder="例: yamada1234">
-
+    
+            <!-- エラーメッセージ -->
+            {% with messages = get_flashed_messages() %} {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} {% endwith %}
+    
             <input type="submit" name="signup_button" value="登録する">
         </div>
     </form>
-    {% endblock %}
-
+{% endblock %}
