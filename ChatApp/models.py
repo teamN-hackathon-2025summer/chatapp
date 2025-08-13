@@ -63,7 +63,7 @@ class Channel:
             with conn.cursor() as cur:
                 sql="SELECT * FROM channels;"
                 cur.execute(sql) 
-                channels=cur.fetchal()
+                channels=cur.fetchall()
                 return channels
         except pymysql.Error as e:
             print(f'エラーが発生しています:{e}')
