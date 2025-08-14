@@ -44,6 +44,15 @@ h1 {
   box-sizing: border-box;
 }
 
+/* mainのp要素をh2に修正 レイアウト崩れ防止 */
+.form_box h2{
+  color: #472A2A;
+  font-size: 14px;
+  padding-top: 10px;
+  margin: 20px;
+  text-align: center;
+}
+
 /* ボタン */
 .a_button,
 form input[type="submit"] {

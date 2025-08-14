@@ -6,13 +6,6 @@
         <h1>アカウントを作成します</h1>
     
         <div class="form_box">
-            {% with messages = get_flashed_messages() %} {% if messages %}
-          <ul class="flashes">
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-          </ul>
-          {% endif %} {% endwith %}
             <p>お名前を入力してください</p>
             <input type="text" name="name" placeholder="例: 山田太郎" maxlength="8">
     
