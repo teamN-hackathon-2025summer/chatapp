@@ -25,7 +25,8 @@
     {% for ch in channels %} <!-- ch = 全チャンネルを順番に取得して変数chに入れる 全チャンネルを表示する -->
 
     <li> <!-- チャンネル名表示 -->
-      <a href="{{ url_for('detail', cid=ch['cid']) }}">{{ ch['channel_name'] }}</a>
+      <!-- 20250814 修正 -->
+      <a href="{{ url_for('detail', cid=ch['id']) }}">{{ ch['name'] }}</a>
 
       {% if ch['uid'] == uid %}
 
@@ -33,7 +34,8 @@
       <button type="button" class="toggle_form_btn" data-target="renameForm{{ ch['cid'] }}">編集</button>
       <!-- 名前変更フォーム -->
       <div id="renameForm{{ ch['cid'] }}" class="hidden_form">
-        <form action="{{ url_for('update_channel', cid=ch['cid']) }}" method="POST">
+        <!-- 20250814 修正 -->
+        <form action="{{ url_for('update_channel', cid=ch['id']) }}" method="POST">
           <input type="text" name="channelTitle" placeholder="新しい名前">
           <input type="text" name="channelDescription" placeholder="チャンネルの説明を変更">
           <button type="submit">変更</button>
@@ -41,7 +43,8 @@
       </div>
 
       <!-- 削除確認 -->
-      <form action="{{ url_for('delete_channel', cid=ch['cid']) }}" method="POST" onsubmit="return confirm('本当に削除しますか？')">
+      <!-- 20250814 修正 -->
+      <form action="{{ url_for('delete_channel', cid=ch['id']) }}" method="POST" onsubmit="return confirm('本当に削除しますか？')">
         <button type="submit" class="delete-btn">削除</button>
       </form>
       {% endif %}
