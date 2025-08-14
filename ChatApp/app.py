@@ -137,7 +137,7 @@ def create_channel():
     if channel is None:
         channel_description = request.form.get('channelDesscription')
         Channel.create(uid, channel_name, channel_description)
-        return redirect(url_for('channel_view'))
+        return redirect(url_for('channels_view'))
     else:
         error = '既に同じ名前のチャンネルが存在しています'
         return render_template('error/error.html', error_message=error)
