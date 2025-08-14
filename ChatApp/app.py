@@ -38,6 +38,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 def main_view():
     return render_template("main.html")
 
+# ルートページのリダイレクト処理
 # uidを取得済ならchannels.htmlへ,それ以外ならトップページをmain.htmlにするように書き換え
 @app.route("/", methods=["GET"])
 def index():
@@ -46,13 +47,6 @@ def index():
         return redirect(url_for("main_view"))
     return redirect(url_for("channels_view"))
 
-# ルートページのリダイレクト処理
-# @app.route('/', methods=['GET'])
-# def index():
-#     uid = session.get('uid')
-#     if uid is None:
-#         return redirect(url_for('login_view'))
-#     return redirect(url_for('channels_view'))
 
 # サインアップページの表示
 @app.route("/signup", methods=["GET"])
@@ -223,6 +217,13 @@ def delete_message(cid, message_id):
         Message.delete(message_id)
     return redirect("/channels/{cid}/messages".format(cid=cid))
 
+# いいね機能 実装
+#    @app.route('/channels/<cid>/messages/message_id/like', methods = ['POST'])
+#    def likes(cid, message_id):
+#        uid = session.get('uid')
+#        if uid is None:
+#            return redirect(url_for('login_view'))
+#    Message
 
 @app.errorhandler(404)
 def page_not_found(error):

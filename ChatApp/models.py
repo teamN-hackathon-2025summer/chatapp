@@ -32,7 +32,7 @@ class User:
         except pymysql.Error as e:
             print(f"エラーが発生しています：{e}")
             abort(500)
-        finally:
+        finally: #使い終わり コネクションをプールに返す
             db_pool.release(conn)
 
     @classmethod
