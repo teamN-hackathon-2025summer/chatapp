@@ -63,7 +63,7 @@ class Channel:
             with conn.cursor() as cur:
                 sql="SELECT * FROM channels;"
                 cur.execute(sql) 
-                channels=cur.fetchal()
+                channels=cur.fetchall()
                 return channels
         except pymysql.Error as e:
             print(f'エラーが発生しています:{e}')
@@ -75,7 +75,7 @@ class Channel:
     def find_by_cid(cls,cid):
         conn=db_pool.get_conn()
         try:
-            with conn.cursor as cur:
+            with conn.cursor() as cur:
                 sql="SELECT *FROM channels WHERE id=%s;"
                 cur.execute(sql,(cid,))
                 channnel=cur.fetchone()

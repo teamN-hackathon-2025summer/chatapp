@@ -22,6 +22,11 @@ app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
 # 開発中は変更がすぐに反映されないことがあるため、コメントアウトするのが無難です。
 # app.config('SEND_FILE_MAX_AGE_DEFAULT') = 2678400
 
+# (開発中限定)恐らくキャッシュの問題でCSSファイルが反映されない問題の解消のために記述
+# (本番ではこちらはコメントアウト)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
 
 # 複数のCSSファイルを1つにまとめて圧縮（バンドル）する処理を実行。
 # bundle_css_files(app)
@@ -137,7 +142,7 @@ def create_channel():
     if channel is None:
         channel_description = request.form.get('channelDesscription')
         Channel.create(uid, channel_name, channel_description)
-        return redirect(url_for('channel_view'))
+        return redirect(url_for('channels_view'))
     else:
         error = '既に同じ名前のチャンネルが存在しています'
         return render_template('error/error.html', error_message=error)
