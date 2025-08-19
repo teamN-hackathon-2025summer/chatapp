@@ -5,10 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{% endblock %}</title>
-    <link rel = "stylesheet"
-    href="{{ url_for('static', filename='style.css') }}"
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" />
+    <link 
+        rel = "stylesheet"
+        href="{{ url_for('static', filename='css/error.css') }}"
     />
     
 </head>
-{% block body %} {% endblock %}
+    <body class="error">
+    {% block body %} 
+    {% endblock %}
+    </body>
 </html>
