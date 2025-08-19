@@ -2,7 +2,12 @@
 {% block content %}
 
 <!-- タイムライン部分 -->
-<div class="chat_conteiner">
+<div class="chat_wrapper">
+    <!-- サイドバーコンポーネント追加する記述 -->
+    {% include "components/sidebar.html" %}
+</div>
+
+<div class="chat_container">
     <div class="chat_messages">
         {% for msg in messages %}
         {% if msg.uid == uid %}
@@ -10,10 +15,17 @@
         <div class="message my_message">
             <!-- アイコン -->
             <div class="my_icon">■</div>
-            <!-- 吹き出し -->
-            <div class="my_bubble">
-                <!-- formで受け取ったメッセージが表示される -->
-                {{ msg.message }}
+            <!-- 20250819追記 吹き出しと削除ボタンを縦並び用 -->
+            <div class="bubble_container aligin_end">
+                <!-- 吹き出し -->
+                <div class="my_bubble">
+                    <!-- formで受け取ったメッセージが表示される -->
+                    {{ msg.message }}
+                </div>
+                <!-- 20250819追記 自分メッセージ専用：削除ボタン -->
+                <form class="action_line" action="{{ url_for('delete_message', cid=channel['id'], message_id=msg.id) }}" method="post">
+                    <button type="submit" class="delete_btn_link" aria-label="削除">削除</button>
+                </form>
             </div>
         </div>
         {% else %}
@@ -22,15 +34,24 @@
         <div class="message other_message">
             <!-- 相手のアイコン -->
             <div class="other_icon">●</div>
-            <!-- 相手の吹き出し -->
-            <div class="other_bubble">
-                {{ msg.message }}
+            <!-- 20250819追記 吹き出しと削除ボタンを縦並び用 -->
+            <div class="bubble_container aligin_start">
+                <!-- 相手の吹き出し -->
+                <div class="other_bubble">
+                    {{ msg.message }}
+                </div>
+                <!-- 20250819追記 相手メッセージ専用：いいねボタン（既に押してたら無効化） jinja2テンプレートの記述は仮-->
+                <form class="action_line" action="{{ url_for('like_message', cid=channel['id'], message_id=msg.id) }}" method="post">
+                    <button type="submit" class="like_btn_link" {% if msg.liked_by_me %} disabled aria-disabled="true" {% endif %} aria-label="いいね" title="{% if msg.liked_by_me %}いいね済み
+                        {% else %}いいね{% endif %}">
+                        いいね
+                    </button>
+                </form>
             </div>
         </div>
         {% endif %}
         {% endfor %}
     </div>
-
 
     <!-- テキスト入力、送信ボタン、定型文ボタン -->
     <div class="send_box">
@@ -55,9 +76,6 @@
             <!-- inputは終了タグいらない -->
             <button type="submit" id="send_btn">送信</button>
         </form>
-
-        <!-- delete_message関数呼び出す削除ボタンの実装(予定) -->
     </div>
 </div>
-
 {% endblock %}
