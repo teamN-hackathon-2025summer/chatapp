@@ -187,8 +187,10 @@ def detail(cid):
 
     channel = Channel.find_by_cid(cid)
     messages = Message.get_all(cid)
+    channels = Channel.get_all()  # ← 追記ここで全部のチャンネル一覧を取得する
+    print("channels:", channels) # 検証
+    return render_template("messages.html", messages=messages, channel=channel, uid=uid,channels=channels ) # ← 追記ここで全部のチャンネル一覧を取得する
 
-    return render_template("messages.html", messages=messages, channel=channel, uid=uid)
 
 
 # メッセージの投稿
@@ -217,14 +219,20 @@ def delete_message(cid, message_id):
         Message.delete(message_id)
     return redirect("/channels/{cid}/messages".format(cid=cid))
 
-# いいね機能 実装
-#    @app.route('/channels/<cid>/messages/message_id/like', methods = ['POST'])
-#    def likes(cid, message_id):
-#        uid = session.get('uid')
-#        if uid is None:
-#            return redirect(url_for('login_view'))
-#    Message
+# いいね機能(相手メッセージのみ) 実装
+@app.route('/channels/<cid>/messages/,<int:message_id>/like', methods = ['POST'])
+def like_message(cid, message_id):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    # 自分のメッセージにいいねは不可（UIでも隠すがサーバも念のため）
+    if Message.belongs_to(message_id, uid):
+        abort(400)
 
+    MessageLike.like(message_id, uid)
+    return redirect(f"/channels/{cid}/messages")
+
+# エラーメッセージ表示
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template("error/404.html"), 404

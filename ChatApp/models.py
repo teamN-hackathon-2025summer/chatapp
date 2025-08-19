@@ -213,3 +213,53 @@ class Message:
             abort(500)
         finally:
             db_pool.release(conn)
+
+    # 削除前に本人チェック
+    @classmethod
+    def belongs_to(cls, message_id, uid):
+        """メッセージが uid 本人のものかを返す"""
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "SELECT 1 FROM messages WHERE id=%s AND uid=%s"
+                cur.execute(sql, (message_id, uid))
+                return cur.fetchone() is not None
+        except pymysql.Error as e:
+            print(f"エラーが発生しています：{e}")
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
+    # メッセージ削除
+    @classmethod
+    def delete(cls, message_id):
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "DELETE FROM messages WHERE id=%s;"
+                cur.execute(sql, (message_id,))
+                conn.commit()
+        except pymysql.Error as e:
+            print(f"エラーが発生しています：{e}")
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
+# いいね処理
+class MessageLike:
+    @classmethod
+    def like(cls, message_id, uid):
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "INSERT INTO message_likes(message_id, uid) VALUES(%s, %s);"
+                cur.execute(sql, (message_id, uid))
+                conn.commit()
+        except pymysql.err.IntegrityError:
+            # 既に押している場合（UNIQUE違反）は無視してOK（静かに成功扱い）
+            conn.rollback()
+        except pymysql.Error as e:
+            print(f"エラーが発生しています：{e}")
+            abort(500)
+        finally:
+            db_pool.release(conn)

@@ -45,7 +45,7 @@ h1 {
 }
 
 /* mainのp要素をh2に修正 レイアウト崩れ防止 */
-.form_box h2{
+.form_box h2 {
   color: #472A2A;
   font-size: 14px;
   padding-top: 10px;
@@ -125,11 +125,18 @@ form input[type="text"]:focus {
 }
 
 /* channels.html */
-/* サイドバー */
+/* サイドバー 20250816変更と追記 */
+.chat_wrapper {
+  display: flex;
+  height: 100vh;
+  /* 全画面に広げる */
+}
+
+/* 20250816変更と追記 */
 .sidebar {
   width: 250px;
   background: #BCA881;
-  padding: 15px;
+  padding: 10px;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -139,8 +146,16 @@ form input[type="text"]:focus {
   transition: transform 0.3 ease;
 }
 
-.sidebar li{
+.sidebar li {
   list-style: none;
+}
+
+/* 20250816追記 */
+.main_content {
+  flex: 1;
+  padding: 10px;
+  background: #fff;
+  overflow-y: auto;
 }
 
 /* 非表示時 */
@@ -160,22 +175,24 @@ form input[type="text"]:focus {
 
 /* 折り畳みフォームの非表示 */
 .hidden_form {
-    display: none;
-    margin-top: 5px;
+  display: none;
+  margin-top: 5px;
 }
 
 /* トグルボタン */
 .toggle_form_btn {
-    font-size: 1em;
-    padding: 4px 8px;
-    margin-left: 5px;
-    cursor: pointer;
+  font-size: 1em;
+  padding: 4px 8px;
+  margin-left: 5px;
+  cursor: pointer;
 }
 
-/* masseges.html ------------------------- */
+/* ------------------------- */
+/* massages.html */
+/* ------------------------- */
 
 /* チャット全体のコンテナ */
-.chat_conteiner {
+.chat_container {
   background-color: #d3d3d3;
   padding: 16px;
   min-height: 100vh;
@@ -200,17 +217,47 @@ form input[type="text"]:focus {
   margin: 4px;
 }
 
+/* 20250819追記 */
 .message {
   display: flex;
-  align-items: flex-end;
+  gap: 8px;
+  /* アイコンと吹き出しの距離 */
+  max-width: 100%;
+  /* 横幅暴走防止 */
 }
 
-.my_message {
+/* 20250819追記 吹き出しと削除(いいね)ボタンを縦並び用*/
+.bubble_block {
+  display: flex;             /* 縦積み */
+  flex-direction: column;
+  gap: 4px;                  /* バブルとボタンの間隔 */
+  max-width: 80%;            /* 既存の幅と合わせる */
+}
+
+/* 20250819追記 右寄せ（自分）・左寄せ（相手） */
+.align_end   { align-items: flex-end; }
+.align_start { align-items: flex-start; }
+
+/* .my_message {
   justify-content: flex-end;
-}
+} */
 
-.other_message {
+/* .other_message {
   justify-content: flex-start;
+} */
+
+/* 20250819追記 メッセージ吹き出し共通 */
+/* バブル内右下に小ボタンを置くための下余白を確保 */
+.my_bubble,
+.other_bubble {
+  max-width: 80%;
+  /* PC版では80％ */
+  position: relative;
+  /* 子のボタンをabsoluteで固定 */
+  overflow-wrap: anywhere;
+  /* 長いURL/単語でのはみ出し防止 */
+  word-break: break-word;
+  /* 日本語連続でも折り返し */
 }
 
 /* 自分のメッセージ投稿 */
@@ -235,15 +282,73 @@ form input[type="text"]:focus {
   position: relative;
 }
 
+/* 20250819追記 リンク風ボタン（見た目は控えめ、押しやすさは確保） */
+.action_line {
+  margin: 0;                 /* 余計なズレ防止 */
+}
+
+/* 20250819追記 */
+.like_btn_link,
+.delete_btn_link {
+  border: none;
+  padding: 2px 6px;
+  /* 小さめでもタップしやすい厚み */
+  text-align: center;
+  border-radius: 20px;
+  /* 既存配色に合わせる */
+  font-size: 10px;
+  /* 小さめ文字 */
+  line-height: 1.2;
+  /* 窮屈にならない行間 */
+  opacity: 0.75;
+  /* 目立ちすぎない */
+  cursor: pointer;
+}
+
+/* 20250819追記 */
+.like_btn_link{
+  background-color: #893d6f;
+  color: #FFF;
+  box-shadow: 2px 2px 4px gray;
+}
+
+/* 20250819追記 */
+.delete_btn_link{
+  background-color: #438362;
+  color: #FFF;
+  box-shadow: 2px 2px 4px gray;
+}
+
+/* 20250819追記 */
+.btn_link:hover {
+  opacity: 1;
+  /* PCホバー時だけ少し強調 */
+}
+
+/* 20250819追記 */
+.btn_link[disabled],
+.btn_link[aria-disabled="true"] {
+  opacity: 0.4;
+  /* 既にいいね済み等は薄く */
+  text-decoration: none;
+  cursor: default;
+}
+
 /* 投稿フォーム */
-.send_box {
+.send_box form{
   display: flex;
+  gap: 8px;
+  /* 20250819追記 間隔確保 */
+  flex-wrap: wrap;
+  /* 20250819追記 狭いときは下に折り返す */
   justify-content: center;
   flex-direction: column;
   color: #472A2A;
 }
 
 #send_message {
+  min-width: 160px;
+  /* 20250819追記 つぶれ防止 */
   flex-grow: 1;
   border-radius: 16px;
   border: 2px solid #438362;
@@ -325,10 +430,9 @@ form input[type="text"]:focus {
   background-color: #e0e0e0;
 }
 
-/* -------------------------
-レスポンシブ対応
--------------------------
-*/
+/* ------------------------- */
+/* レスポンシブ対応 */
+/* ------------------------- */
 
 /* タブレット(768px以下) */
 @media screen and (max-width:768px) {
@@ -379,4 +483,29 @@ form input[type="text"]:focus {
     padding: 10px 20px;
     /* ボタン幅を少し小さく */
   }
+
+  /* 20250819追記 */
+  .my_bubble,
+  .other_bubble {
+    max-width: 90%;                  
+    /* スマホでは少し広く */
+  }
+
+  /* 20250819追記 */
+  #template_popup {
+    position: fixed;                 
+    /* 画面基準に変更 */
+    left: 16px;                      
+    /* 画面端から安全マージン */
+    right: 16px;
+    bottom: 16px;                    
+    /* 画面下に固定 */
+    transform: none;                 
+    /* 中央寄せを解除 */
+    width: auto;                     
+    /* 画面幅に合わせる */
+    max-width: none;                 
+    /* 上限撤廃 */
+  }
 }
+

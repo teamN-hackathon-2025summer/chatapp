@@ -1,0 +1,46 @@
+<button id="toggle_sidebar" class="toggle_btn">サイドバー表示 / 非表示</button>
+
+<div id="sidebar" class="sidebar">
+
+  <!-- チャンネル作成フォーム -->
+  <button type="button" class="toggle_form_btn" data-target="createForm">チャンネルを作成</button>
+  <div id="createForm" class="hidden_form">
+    <form action="{{ url_for('create_channel') }}" method="POST">
+      <input type="text" name="channelTitle" placeholder="チャンネル名" required>
+      <input type="text" name="channelDescription" placeholder="チャンネルの説明">
+      <button type="submit">作成</button>
+    </form>
+  </div>
+
+  <!-- チャンネル一覧 -->
+  <ul>
+    {% for ch in channels %}
+    <li>
+      <a href="{{ url_for('detail', cid=ch['id']) }}">{{ ch['name'] }}</a>
+    </li>
+    {% if ch['uid'] == uid %}
+    <!-- 名前変更ボタン -->
+    <button type="button" class="toggle_form_btn" data-target="renameForm{{ ch['id'] }}">編集</button>
+    <!-- 名前変更フォーム -->
+    <div id="renameForm{{ ch['id'] }}" class="hidden_form">
+      <form action="{{ url_for('update_channel', cid=ch['id']) }}" method="POST">
+        <input type="text" name="channelTitle" placeholder="新しい名前">
+        <input type="text" name="channelDescription" placeholder="チャンネルの説明を変更">
+        <button type="submit">変更</button>
+      </form>
+    </div>
+
+    <!-- 削除確認 -->
+    <form action="{{ url_for('delete_channel', cid=ch['id']) }}" method="POST" onsubmit="return confirm('本当に削除しますか？')">
+      <button type="submit" class="delete-btn">削除</button>
+    </form>
+    {% endif %}
+  </li>
+    {% endfor %}
+  </ul>
+
+  <!-- ログアウト -->
+  <form action="{{ url_for('logout') }}" method="GET">
+    <button type="submit" class="logout-btn">ログアウト</button>
+  </form>
+</div>
