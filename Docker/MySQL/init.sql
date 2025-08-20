@@ -31,6 +31,15 @@ CREATE TABLE messages (
     FOREIGN KEY (cid) REFERENCES channels(id) ON DELETE CASCADE
 );
 
+CREATE TABLE likes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    uid VARCHAR(255) NOT NULL,
+    message_id INT NOT NULL,
+    FOREIGN KEY (uid) REFERENCES users(uid) ON DELETE CASCADE,
+    FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE
+);
+
+
 INSERT INTO users(uid, user_name, email, password) VALUES('970af84c-dd40-47ff-af23-282b72b7cca8','テスト','test@gmail.com','37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578');
 INSERT INTO channels(id, uid, name, abstract) VALUES(1, '970af84c-dd40-47ff-af23-282b72b7cca8','ぼっち部屋','テストさんの孤独な部屋です');
 INSERT INTO messages(id, uid, cid, message) VALUES(1, '970af84c-dd40-47ff-af23-282b72b7cca8', '1', '誰かかまってください、、')
