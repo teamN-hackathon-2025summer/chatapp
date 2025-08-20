@@ -1,5 +1,13 @@
 /* 404/500/その他エラー画面のCSS */
 
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
 body.error {
     margin: 0;
     padding: 0;
@@ -49,6 +57,13 @@ body.error::before {
 
 .error-title {
     line-height: 0.5;
+    text-align: center;
+}
+
+.error-num {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #438602;
     text-align: center;
 }
 
