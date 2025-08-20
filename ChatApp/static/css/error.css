@@ -1,0 +1,74 @@
+/* 404/500/その他エラー画面のCSS */
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+body.error {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+body.error::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/static/img/error.png") no-repeat center center;
+    background-size: contain;
+    background-color: #C3C3C3;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+
+.error-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    color: #C3C3C3;
+}
+
+.error-content {
+    height: 70%;
+    width: 70%;
+    margin: auto;
+    color: #438602;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-title {
+    line-height: 0.5;
+    text-align: center;
+}
+
+.error-num {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #438602;
+    text-align: center;
+}
+
+
+
+
+
+
