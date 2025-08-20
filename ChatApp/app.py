@@ -5,7 +5,7 @@ import uuid
 import re
 import os
 
-from models import User, Channel, Message
+from models import User, Channel, Message,Like
 from util.assets import bundle_css_files
 
 
@@ -188,6 +188,12 @@ def detail(cid):
     
     channel = Channel.find_by_cid(cid)
     messages = Message.get_all(cid)
+    
+        #いいね数=Like.メッセージごとの言い値数を取得する関数
+    for m in messages:
+       m.like_count=Like.count_all_like(m.id)
+
+
 
     return render_template('messages.html', messages=messages, channel=channel, uid=uid)
 
@@ -219,13 +225,19 @@ def delete_message(cid, message_id):
     return redirect('/channels/{cid}/messages' .format(cid = cid))
 
 
-# いいね機能 実装
-#    @app.route('/channels/<cid>/messages/message_id/like', metthods = ['POST'])
-#    def likes(cid, message_id):
-#        uid = session.get('uid')
-#        if uid is None:
-#            return redirect(url_for('login_view'))
-#    Message
+#メッセージのいいね機能
+@app.route('/channels/<cid>/messages/<message_id>/like',methods=['POST'])
+def like_function(cid,message_id):
+    uid=session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    
+    if Like.like_research(uid,message_id):
+        Like.like_delete(uid,message_id)
+    else:
+        Like.like_insert(uid,message_id)
+    
+    return redirect(url_for('detail', cid=cid))
         
 
 

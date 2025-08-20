@@ -41,11 +41,8 @@
                     {{ msg.message }}
                 </div>
                 <!-- 20250819追記 相手メッセージ専用：いいねボタン（既に押してたら無効化） jinja2テンプレートの記述は仮-->
-                <form class="action_line" action="{{ url_for('like_message', cid=channel['id'], message_id=msg.id) }}" method="post">
-                    <button type="submit" class="like_btn_link" {% if msg.liked_by_me %} disabled aria-disabled="true" {% endif %} aria-label="いいね" title="{% if msg.liked_by_me %}いいね済み
-                        {% else %}いいね{% endif %}">
-                        いいね
-                    </button>
+                <form class="action_line" action="/channels/{{channel.id}}/messages/{{message.id}}/like"  method="post">
+                    <button type="submit" class="like_btn_link">いいね</button>  
                 </form>
             </div>
         </div>
