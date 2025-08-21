@@ -202,6 +202,30 @@ form input[type="text"]:focus {
   justify-content: space-between;
 }
 
+/* 20250822追記 チャンネルヘッダー ここにチャンネル名を表示 */
+.channel_header {
+  padding: 8px;
+  color: #d3d3d3;
+  background-color: #438362;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+/* 20250822追記 チャンネル名 */
+.channel_title {
+  font-size: 18px;
+  font-weight: 700;
+  margin:0;
+  text-align: center;
+}
+
+/* 20250822追記 チャンネル説明 */
+.channel_desc {
+  font-size: 12px;
+  margin: 4px 0 0;
+  text-align: center;
+}
+
 /* チャットのメッセージ表示エリア 縦並び */
 .chat_messages {
   display: flex;
@@ -210,11 +234,25 @@ form input[type="text"]:focus {
   margin-bottom: 32px;
 }
 
+/* 20250822追記 */
+.profile_box{
+  display: flex;
+  flex-direction: column;
+}
+
 .my_icon,
 .other_icon {
   color: #BCA881;
   font-size: 30px;
   margin: 4px;
+}
+
+/* 20250822追記 自分・相手の名前表示 */
+.message_meta {
+  font-size: 11px;
+  margin-top: 4px;
+  text-align: center;
+  opacity: .7;
 }
 
 /* 20250819追記 */
@@ -228,15 +266,23 @@ form input[type="text"]:focus {
 
 /* 20250819追記 吹き出しと削除(いいね)ボタンを縦並び用*/
 .bubble_block {
-  display: flex;             /* 縦積み */
+  display: flex;
+  /* 縦積み */
   flex-direction: column;
-  gap: 4px;                  /* バブルとボタンの間隔 */
-  max-width: 80%;            /* 既存の幅と合わせる */
+  gap: 4px;
+  /* バブルとボタンの間隔 */
+  max-width: 80%;
+  /* 既存の幅と合わせる */
 }
 
 /* 20250819追記 右寄せ（自分）・左寄せ（相手） */
-.align_end   { align-items: flex-end; }
-.align_start { align-items: flex-start; }
+.align_end {
+  align-items: flex-end;
+}
+
+.align_start {
+  align-items: flex-start;
+}
 
 /* .my_message {
   justify-content: flex-end;
@@ -284,7 +330,8 @@ form input[type="text"]:focus {
 
 /* 20250819追記 リンク風ボタン（見た目は控えめ、押しやすさは確保） */
 .action_line {
-  margin: 0;                 /* 余計なズレ防止 */
+  margin: 0;
+  /* 余計なズレ防止 */
 }
 
 /* 20250819追記 */
@@ -305,15 +352,28 @@ form input[type="text"]:focus {
   cursor: pointer;
 }
 
+/* 0250822追記 いいねボタンとカウント数の配置整理 */
+.like_box{
+  display: flex;
+  flex-direction: row;
+}
+
 /* 20250819追記 */
-.like_btn_link{
+.like_btn_link {
   background-color: #893d6f;
   color: #FFF;
   box-shadow: 2px 2px 4px gray;
 }
 
+/* 20250822追記 いいねカウンター */
+.like_count{
+  font-size: 14px;
+  color: #893d6f;
+  padding: 6px;
+}
+
 /* 20250819追記 */
-.delete_btn_link{
+.delete_btn_link {
   background-color: #438362;
   color: #FFF;
   box-shadow: 2px 2px 4px gray;
@@ -335,7 +395,7 @@ form input[type="text"]:focus {
 }
 
 /* 投稿フォーム */
-.send_box form{
+.send_box form {
   display: flex;
   gap: 8px;
   /* 20250819追記 間隔確保 */
@@ -344,6 +404,11 @@ form input[type="text"]:focus {
   justify-content: center;
   flex-direction: column;
   color: #472A2A;
+}
+
+/* チャットを始める */
+.send_box p{
+  color: #438362;
 }
 
 #send_message {
@@ -487,25 +552,24 @@ form input[type="text"]:focus {
   /* 20250819追記 */
   .my_bubble,
   .other_bubble {
-    max-width: 90%;                  
+    max-width: 90%;
     /* スマホでは少し広く */
   }
 
   /* 20250819追記 */
   #template_popup {
-    position: fixed;                 
+    position: fixed;
     /* 画面基準に変更 */
-    left: 16px;                      
+    left: 16px;
     /* 画面端から安全マージン */
     right: 16px;
-    bottom: 16px;                    
+    bottom: 16px;
     /* 画面下に固定 */
-    transform: none;                 
+    transform: none;
     /* 中央寄せを解除 */
-    width: auto;                     
+    width: auto;
     /* 画面幅に合わせる */
-    max-width: none;                 
+    max-width: none;
     /* 上限撤廃 */
   }
 }
-
