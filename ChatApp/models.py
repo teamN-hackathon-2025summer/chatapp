@@ -32,7 +32,7 @@ class User:
         except pymysql.Error as e:
             print(f"エラーが発生しています：{e}")
             abort(500)
-        finally: #使い終わり コネクションをプールに返す
+        finally:  # 使い終わり コネクションをプールに返す
             db_pool.release(conn)
 
     @classmethod
@@ -158,6 +158,15 @@ class Channel:
 
 # メッセージクラス
 class Message:
+    # いいね機能追加部分
+    # __init__は@classmethodつけちゃダメなルールらしい 逆にcreateは@classmethodを付けないと✕
+    def __init__(self, id, uid, user_name, message, like_count=0):
+        self.id = id
+        self.uid = uid
+        self.user_name = user_name
+        self.message = message
+        self.like_count = like_count
+
     @classmethod
     def create(cls, uid, cid, message):
         conn = db_pool.get_conn()
@@ -214,52 +223,90 @@ class Message:
         finally:
             db_pool.release(conn)
 
-    # 削除前に本人チェック
-    @classmethod
-    def belongs_to(cls, message_id, uid):
-        """メッセージが uid 本人のものかを返す"""
-        conn = db_pool.get_conn()
-        try:
-            with conn.cursor() as cur:
-                sql = "SELECT 1 FROM messages WHERE id=%s AND uid=%s"
-                cur.execute(sql, (message_id, uid))
-                return cur.fetchone() is not None
-        except pymysql.Error as e:
-            print(f"エラーが発生しています：{e}")
-            abort(500)
-        finally:
-            db_pool.release(conn)
-
-    # メッセージ削除
-    @classmethod
-    def delete(cls, message_id):
-        conn = db_pool.get_conn()
-        try:
-            with conn.cursor() as cur:
-                sql = "DELETE FROM messages WHERE id=%s;"
-                cur.execute(sql, (message_id,))
-                conn.commit()
-        except pymysql.Error as e:
-            print(f"エラーが発生しています：{e}")
-            abort(500)
-        finally:
-            db_pool.release(conn)
 
 # いいね処理
-class MessageLike:
+# likesテーブルについて
+class Like:
     @classmethod
-    def like(cls, message_id, uid):
+    def like_research(cls, uid, message_id):
+        conn = db_pool.get_conn()
+        # そのユーザーがそのメッセージに既に「いいね」してるか 1件SELECT して確認
+        try:
+            with conn.cursor() as cur:
+                # 既にいいねがあるか確認
+                sql_check = "SELECT id FROM likes WHERE uid=%s AND message_id=%s;"
+                cur.execute(sql_check, (uid, message_id))
+                row = cur.fetchone()
+                # 行があれば True（＝すでにある）
+                if row:
+                    return True  
+                else:
+                    # なければ False を返す
+                    return False  
+        except pymysql.Error as e:
+            print(f"エラーが発生しています：{e}")
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
+    @classmethod
+    def like_insert(cls, uid, message_id):
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql = "INSERT INTO message_likes(message_id, uid) VALUES(%s, %s);"
-                cur.execute(sql, (message_id, uid))
+                # なければ追加
+                sql_insert = "INSERT INTO likes (uid, message_id) VALUES (%s, %s);"
+                cur.execute(
+                    sql_insert,
+                    (
+                        uid,
+                        message_id,
+                    ),
+                )
                 conn.commit()
-        except pymysql.err.IntegrityError:
-            # 既に押している場合（UNIQUE違反）は無視してOK（静かに成功扱い）
-            conn.rollback()
         except pymysql.Error as e:
-            print(f"エラーが発生しています：{e}")
+            print(f"エラーが発生しています:{e}")
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
+    @classmethod
+    def like_delete(cls, uid, message_id):
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                # 既にあれば削除
+                sql_delete = "DELETE FROM likes WHERE uid=%s AND message_id=%s;"
+                cur.execute(
+                    sql_delete,
+                    (
+                        uid,
+                        message_id,
+                    ),
+                )
+                conn.commit()
+        except pymysql.Error as e:
+            print(f"エラーが発生しています:{e}")
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
+# SELECT COUNT(*) でそのメッセージの いいね総数を数えて返す
+    @classmethod
+    def count_all_like(cls, message_id):
+        conn = db_pool.get_conn()
+        try:
+            # DictCursor を指定してるのは、{"cnt": 3} みたいな 辞書型[ ]で返ってくるようにするため
+            with conn.cursor(pymysql.cursors.DictCursor) as cur:
+                sql = "SELECT COUNT(*) AS cnt FROM likes WHERE message_id = %s;"
+                cur.execute(sql, (message_id,))
+                likes_number = cur.fetchone()
+                return (
+                    # 辞書型[ "cnt" : いいね数 ]で返ってくる
+                    likes_number["cnt"] if likes_number else 0
+                )  # 数字だけ返すなんだこれ？
+        except pymysql.Error as e:
+            print(f"エラーが発生しています:{e}")
             abort(500)
         finally:
             db_pool.release(conn)

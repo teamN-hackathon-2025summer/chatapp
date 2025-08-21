@@ -1,11 +1,21 @@
-from flask import Flask, request, redirect, render_template, session, flash, abort,url_for
+from flask import (
+    Flask,
+    request,
+    redirect,
+    render_template,
+    session,
+    flash,
+    abort,
+    url_for,
+)
 from datetime import timedelta
 import hashlib
 import uuid
 import re
 import os
 
-from models import User, Channel, Message
+# 20250821 Likeを追加
+from models import User, Channel, Message,Like
 from util.assets import bundle_css_files
 
 
@@ -26,7 +36,7 @@ app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
 # app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 2678400
 
 # (開発中限定)恐らくキャッシュの問題でCSSファイルが反映されない問題の解消のために記述(本番ではこちらはコメントアウトしてください)
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # 複数のCSSファイルを1つにまとめて圧縮（バンドル）する処理を実行。
@@ -37,6 +47,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 @app.route("/main", methods=["GET"])
 def main_view():
     return render_template("main.html")
+
 
 # ルートページのリダイレクト処理
 # uidを取得済ならchannels.htmlへ,それ以外ならトップページをmain.htmlにするように書き換え
@@ -80,7 +91,7 @@ def signup_process():
             UserId = str(uid)
             session["uid"] = UserId
             return redirect(url_for("channels_view"))
-    return redirect(url_for("signup_view")) # 変更 要検証
+    return redirect(url_for("signup_view"))  # 変更 要検証
 
 
 # ログインページの表示
@@ -186,11 +197,18 @@ def detail(cid):
         return redirect(url_for("login_view"))
 
     channel = Channel.find_by_cid(cid)
+    # messages と users を JOIN した結果を 辞書のリストとして返す(辞書型)
     messages = Message.get_all(cid)
     channels = Channel.get_all()  # ← 追記ここで全部のチャンネル一覧を取得する
-    print("channels:", channels) # 検証
-    return render_template("messages.html", messages=messages, channel=channel, uid=uid,channels=channels ) # ← 追記ここで全部のチャンネル一覧を取得する
 
+    # いいね数=Like.メッセージごとのいいね数を取得する関数
+    for m in messages:
+        # 20210821 Python側の返り値は辞書型(dict型)というルールがあるのでドットを使うとキーを上手く渡せない？
+        m['like_count'] = Like.count_all_like(m['id']) # いいね総数
+    print("channels:", channels)  # 検証
+    return render_template(
+        "messages.html", messages=messages, channel=channel, uid=uid, channels=channels
+    )  # ← 追記ここで全部のチャンネル一覧を取得する
 
 
 # メッセージの投稿
@@ -219,18 +237,22 @@ def delete_message(cid, message_id):
         Message.delete(message_id)
     return redirect("/channels/{cid}/messages".format(cid=cid))
 
-# いいね機能(相手メッセージのみ) 実装
-@app.route('/channels/<cid>/messages/,<int:message_id>/like', methods = ['POST'])
-def like_message(cid, message_id):
-    uid = session.get('uid')
-    if uid is None:
-        return redirect(url_for('login_view'))
-    # 自分のメッセージにいいねは不可（UIでも隠すがサーバも念のため）
-    if Message.belongs_to(message_id, uid):
-        abort(400)
 
-    MessageLike.like(message_id, uid)
-    return redirect(f"/channels/{cid}/messages")
+# メッセージのいいね機能
+@app.route("/channels/<cid>/messages/<message_id>/like", methods=["POST"])
+def like_function(cid, message_id):
+    uid = session.get("uid")
+    if uid is None:
+        return redirect(url_for("login_view"))
+    
+# そのユーザーがそのメッセージに既に「いいね」してるか 1件SELECT して確認。行があれば True（＝すでにある）場合は削除、なければ いいね数をカウントして返す
+    if Like.like_research(uid, message_id):
+        Like.like_delete(uid, message_id)
+    else:
+        Like.like_insert(uid, message_id)
+
+    return redirect(url_for("detail", cid=cid))
+
 
 # エラーメッセージ表示
 @app.errorhandler(404)

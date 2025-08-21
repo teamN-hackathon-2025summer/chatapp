@@ -1,13 +1,16 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>エラー</title>
-</head>
-<body>
-  <h1>404 ページが見つかりませんでした</h1>
-  <p>お探しのページは存在しないか、URLが間違っている可能性があります。</p>
-  <a href="{{ url_for('main_view' ) }}">トップページへ戻る</a>
-</body>
-</html>
+{% extends 'error/base.html' %} {% block title %} error {% endblock %} 
+{% block body %}
+<div class="error">
+  <div class="error-wrapper">
+    <div class="error-content">
+      <div>
+        <p class="error-num">4 0 4</p>
+      </div>
+      <div class="error-descraption error404or500">
+        <p>ページが見つかりません</p>
+        <a class="error-button pink" href="{{ url_for('channels_view') }}">戻る</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block script %} {% endblock %}
