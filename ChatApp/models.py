@@ -132,6 +132,7 @@ class Channel:
 
 #メッセ―ジクラス
 class Message:
+    #@classmethod これはあくまでデコレーター
     def __init__(self, id, uid, user_name, message):
         self.id = id
         self.uid = uid
@@ -171,8 +172,8 @@ class Message:
                    ORDER BY id ASC;
                 """
                cur.execute(sql,(cid,))
-               messages=cur.fetchall()
-               return messages
+               rows=cur.fetchall()          #messages=cur.fetchall()
+               return [cls(row["id"], row["uid"], row["user_name"], row["message"]) for row in rows]  #messages
         except pymysql.Error as e:
             print(f'エラーが発生しています:{e}')
             abort(500)
