@@ -188,14 +188,17 @@ def detail(cid):
     
     channel = Channel.find_by_cid(cid)
     messages = Message.get_all(cid)
+    channels=Channel.get_all()
     
-        #いいね数=Like.メッセージごとの言い値数を取得する関数
+    print(messages)
+    print("Hello, this is a log!", flush=True)
+
+    #いいね数=Like.メッセージごとの言い値数を取得する関数
     for m in messages:
        m.like_count=Like.count_all_like(m.id)
-
-
-
-    return render_template('messages.html', messages=messages, channel=channel, uid=uid)
+       print(m.message)  
+  
+    return render_template('messages.html', messages=messages, channel=channel, uid=uid, channels=channels)
 
 
 # メッセージの投稿
@@ -210,7 +213,8 @@ def create_message(cid):
     if message:
         Message.create(uid, cid, message)
 
-    return redirect('/channels/{cid}/messages' .format(cid = cid))
+    return redirect(url_for("detail",cid=cid))
+    #return redirect('/channels/{cid}/messages' .format(cid = cid)) #危険かも　redirect(url_for(detail,cid=cid)
 
 
 # メッセージの削除

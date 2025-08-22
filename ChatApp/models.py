@@ -132,7 +132,7 @@ class Channel:
 
 #メッセ―ジクラス
 class Message:
-    @classmethod
+    #@classmethod
     def __init__(self, id, uid, user_name, message):
         self.id = id
         self.uid = uid
@@ -143,7 +143,7 @@ class Message:
 
 
 
-
+    @classmethod
     def create(cls,uid,cid,message):
         conn=db_pool.get_conn()
         try:
@@ -170,10 +170,16 @@ class Message:
                    INNER JOIN users AS u ON m.uid = u.uid 
                    WHERE cid = %s 
                    ORDER BY id ASC;
+
                 """
                cur.execute(sql,(cid,))
-               messages=cur.fetchall()
-               return messages
+               rows = cur.fetchall()
+               for row in rows:
+                   print(row["id"])
+                   print(row["uid"])
+                   print(row["user_name"])
+                   print(row["message"])
+               return [cls(row["id"], row["uid"], row["user_name"], row["message"]) for row in rows]
         except pymysql.Error as e:
             print(f'エラーが発生しています:{e}')
             abort(500)

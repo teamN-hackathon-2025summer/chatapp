@@ -41,7 +41,7 @@
                     {{ msg.message }}
                 </div>
                 <!-- 20250819追記 相手メッセージ専用：いいねボタン（既に押してたら無効化） jinja2テンプレートの記述は仮-->
-                <form class="action_line" action="/channels/{{channel.id}}/messages/{{message.id}}/like"  method="post">
+                <form class="action_line" action="/channels/{{channel.id}}/messages/{{msg.id}}/like"  method="post">
                     <button type="submit" class="like_btn_link">いいね</button>  
                 </form>
             </div>
