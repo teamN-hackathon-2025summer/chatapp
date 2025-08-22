@@ -132,7 +132,6 @@ class Channel:
 
 #メッセ―ジクラス
 class Message:
-    @classmethod
     def __init__(self, id, uid, user_name, message):
         self.id = id
         self.uid = uid
@@ -143,7 +142,7 @@ class Message:
 
 
 
-
+    @classmethod
     def create(cls,uid,cid,message):
         conn=db_pool.get_conn()
         try:

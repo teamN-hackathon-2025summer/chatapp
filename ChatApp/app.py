@@ -5,7 +5,7 @@ import uuid
 import re
 import os
 
-from models import User, Channel, Message,Like
+from models import User, Channel, Message, Like
 from util.assets import bundle_css_files
 
 
@@ -95,7 +95,7 @@ def login_process():
     password = request.form.get('password')
 
     if email == '' or password == '':
-        flash('空のフォームがあるあるようです')
+        flash('空のフォームがあるようです')
     else:
         user = User.find_by_email(email)
         if user is None:
@@ -140,7 +140,7 @@ def create_channel():
     channel_name = request.form.get('channelTitle')
     channel = Channel.find_by_name(channel_name)
     if channel is None:
-        channel_description = request.form.get('channelDesscription')
+        channel_description = request.form.get('channelDescription')
         Channel.create(uid, channel_name, channel_description)
         return redirect(url_for('channels_view'))
     else:
@@ -188,14 +188,15 @@ def detail(cid):
     
     channel = Channel.find_by_cid(cid)
     messages = Message.get_all(cid)
+    channels = Channel.get_all()
     
-        #いいね数=Like.メッセージごとの言い値数を取得する関数
+#いいね数=Like.メッセージごとの言い値数を取得する関数
     for m in messages:
-       m.like_count=Like.count_all_like(m.id)
+       m.like_count = Like.count_all_like(m.id)
+    print("channels:", channels)
 
 
-
-    return render_template('messages.html', messages=messages, channel=channel, uid=uid)
+    return render_template('messages.html', messages=messages, channel=channel, uid=uid, channels=channels)
 
 
 # メッセージの投稿
