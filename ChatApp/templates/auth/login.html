@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 
-    {% block content %}
+{% block content %}
+<div class="login_container">
     <div class="form_box">
         <h1>ログインしてください</h1>
-            <!-- このformが送信されるとapp.pyで記述したlogin_process関数が呼び出される -->
-            <form name="login_form" action="{{ url_for('login_process') }}" method="post">
-
+        <!-- このformが送信されるとapp.pyで記述したlogin_process関数が呼び出される -->
+        <form name="login_form" action="{{ url_for('login_process') }}" method="post">
+    
             <p>メールアドレスを入力してください</p>
             <input type="email" name="email" placeholder="例: example@gmail.com">
-
+    
             <p>パスワードを入力してください</p>
             <input type="password" name="password" placeholder="例: yamada1234">
-
+    
             <!-- エラーメッセージ -->
             {% with messages = get_flashed_messages() %} {% if messages %}
             <ul class="flashes">
@@ -20,10 +21,14 @@
                 {% endfor %}
             </ul>
             {% endif %} {% endwith %}
-
-            <input type="submit" name="login_button" value="ログイン">
-
-        </div>
+    
+                <!-- ログインボタン -->
+                <input type="submit" name="login_button" value="ログイン">
+            </div>
     </form>
-    {% endblock %}
-
+    <!-- mainページに戻る -->
+                <form action="{{ url_for('main_view') }}" method="GET">
+                    <button type="submit" class="main-btn">もどる</button>
+                </form>
+</div>
+{% endblock %}
