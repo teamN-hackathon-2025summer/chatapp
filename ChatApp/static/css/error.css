@@ -48,7 +48,7 @@ body.error::before {
     height: 70%;
     width: 70%;
     margin: auto;
-    color: #438602;
+    color: #472A2A;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,15 +56,27 @@ body.error::before {
 }
 
 .error-title {
+    font-size: clamp(20px, 10vw, 100px);
+    white-space: nowrap;
+    font-weight: bold;
     line-height: 0.5;
     text-align: center;
 }
 
 .error-num {
-    font-size: 2rem;
+    font-size: clamp(20px, 10vw, 100px);
+    font-weight: bold;
+    color: #472A2A;
+    text-align: center;
+}
+
+.error-message {
+    font-size: clamp(10px, 5vw, 80px);
+    white-space: nowrap;
     font-weight: bold;
     color: #438602;
     text-align: center;
+    margin: 100px 0;
 }
 
 

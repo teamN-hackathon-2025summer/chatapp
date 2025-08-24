@@ -253,6 +253,11 @@ def like_function(cid, message_id):
 
     return redirect(url_for("detail", cid=cid))
 
+# エラー確認用 
+# 本番ではここはコメントアウト
+@app.route('/test_error')
+def test_error():
+    return render_template('error/500.html')
 
 # エラーメッセージ表示
 @app.errorhandler(404)

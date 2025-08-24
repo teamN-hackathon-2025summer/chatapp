@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>エラー</title>
-</head>
-<body>
-  <h1>500 サーバーエラー</h1>
-  <p>何か問題が発生しました。</p>
-  <a href="{{ url_for('main_view' ) }}">トップページへ戻る</a>
-</body>
-</html>
+{% extends 'error/base.html' %} {% block title %} error {% endblock %}
+{% block body %}
+<div class="error">
+  <div class="error-wrapper">
+    <div class="error-content">
+      <div>
+        <p class="error-num">5 0 5</p>
+      </div>
+      <div class="error-descraption error404or500">
+        <p class="error-message">エラーが発生しました</p>
+        <p class="error-message">管理者へお問い合わせください</p>
+          <a class="error-button pink" href="{{ url_for('channels_view') }}">戻る</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {%block script %} {% endblock %}
