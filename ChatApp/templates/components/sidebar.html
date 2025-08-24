@@ -14,29 +14,48 @@
   </div>
 
   <!-- チャンネル一覧 -->
-  <ul>
+  <ul id="channel_list" class="channel_list">
     {% for ch in channels %}
-    <li>
-      <a href="{{ url_for('detail', cid=ch['id']) }}">{{ ch['name'] }}</a>
-    </li>
-    {% if ch['uid'] == uid %}
-    <!-- 名前変更ボタン -->
-    <button type="button" class="toggle_form_btn" data-target="renameForm{{ ch['id'] }}">編集</button>
-    <!-- 名前変更フォーム -->
-    <div id="renameForm{{ ch['id'] }}" class="hidden_form">
-      <form action="{{ url_for('update_channel', cid=ch['id']) }}" method="POST">
-        <input type="text" name="channelTitle" placeholder="新しい名前">
-        <input type="text" name="channelDescription" placeholder="チャンネルの説明を変更">
-        <button type="submit">変更</button>
+    <!-- 20250823追記 左揃えチャンネル名 -->
+    <li class="channel_item">
+      <a class="channel_link" href="{{ url_for('detail', cid=ch['id']) }}">
+        <!-- 20250823追記 ハッシュタグでチャンネル名っぽく -->
+        <span class="hash">#</span>{{ ch['name'] }}
+      </a>
+
+      <!-- 20250823追記 右操作ボタン2つ並べる -->
+      {% if ch['uid'] == uid %}
+      <div class="channel_actions">
+        <button type="button" class="btn_link" data-target="update_form_{{ ch['id'] }}">編集</button>
+        <button type="button" class="btn_link danger" data-target="delete_form_{{ ch['id'] }}">削除</button>
+      </div>
+
+      <!-- 20250823追記 編集フォーム(開閉式) -->
+      <div id="update_form_{{ ch['id'] }}" class="hidden_form" aria-hidden="true">
+        <form action="{{ url_for('update_channel', cid=ch['id']) }}" method="POST" class="inline_form">
+
+          <input type="text" name="channelTitle" placeholder="新しい名前" value="{{ ch['name']}}" required>
+          <input type="text" name="channelDescription" placeholder="チャンネルの説明(任意)">
+
+          <div class="form_actions">
+            <button type="submit">変更</button>
+            <button type="button" class="btn_ghost close_btn" data-target="update_form_{{ ch['id' ] }}">閉じる</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 削除確認(開閉式) -->
+      <div id="delete_form_{{ ch['id'] }}" class="hidden_form confirm_box" aria-hidden="true">
+      <form action="{{ url_for('delete_channel', cid=ch['id']) }}" method="POST" class="inline_form">
+        <p>「{{ ch['name'] }}」を削除します。よろしいですか？</p>
+        <div class="form_actions">
+          <button type="submit" class="btn_danger">削除する</button>
+          <button type="button" class="btn_ghost close_btn" data-target="delete_form_{{ ch['id'] }}">閉じる</button>
+        </div>
       </form>
     </div>
-
-    <!-- 削除確認 -->
-    <form action="{{ url_for('delete_channel', cid=ch['id']) }}" method="POST" onsubmit="return confirm('本当に削除しますか？')">
-      <button type="submit" class="delete-btn">削除</button>
-    </form>
     {% endif %}
-  </li>
+    </li>
     {% endfor %}
   </ul>
 

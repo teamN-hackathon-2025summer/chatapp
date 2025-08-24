@@ -69,6 +69,7 @@ form input[type="submit"] {
   /*ボタンの文字色*/
   font-size: 15px;
   /* ボタン文字サイズ大きめ */
+  font-weight: bold;
   box-shadow: 2px 2px 4px gray;
   cursor: pointer;
 }
@@ -132,30 +133,241 @@ form input[type="text"]:focus {
   /* 全画面に広げる */
 }
 
+/* ------------------------- */
+/* sidebar.html */
+/* ------------------------- */
 /* 20250816変更と追記 */
+/* 20250823変更と追記 */
 .sidebar {
   width: 250px;
   background: #BCA881;
-  padding: 10px;
+  padding: 10px 12px;
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   overflow-y: auto;
   font-size: 16px;
-  transition: transform 0.3 ease;
+  transition: transform 0.3s ease;
+  /* 浮き出る対策 サイドバーを最前面に配置 */
+  z-index: 2000;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+/* デフォルトでPCは表示、モバイルは非表示にしたい場合はJSで制御 */
+.sidebar.hidden {
+  transform: translateX(-100%);
+}
+
+.sidebar.show {
+  transform: translateX(0);
 }
 
 .sidebar li {
   list-style: none;
 }
 
-/* 20250816追記 */
-.main_content {
-  flex: 1;
-  padding: 10px;
+/* チャンネル作成ボタン */
+.toggle_form_btn{
+  font-weight: bold;
+  color: #D8D8D8;
+  background-color: #893d6f;
+  border: none;
+}
+
+/* ログアウトボタン */
+.logout-btn{
+  font-weight: bold;
+  color: #D8D8D8;
+  background-color: #666;
+  border: none;
+}
+
+/* チャンネルリストの各行を左右に分割して横並び */
+.channel_list {
+  padding: 0;
+  margin: 8px 0 16px;
+}
+
+.channel_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 4px;
+  border-radius: 6px;
+}
+
+.channel_item:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.channel_link {
+  text-decoration: none;
+  color: #472A2A;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto;
+  /* 長い名前でも折り返し優先 */
+  min-width: 0;
+  /* テキストの省略を許可 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hash {
+  opacity: 0.75;
+}
+
+/* 右側の操作ボタンを横並びで詰める */
+.channel_actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ボタンの見た目を控えめに（Slack風リンクボタン） */
+.btn_link {
+  background: transparent;
+  border: none;
+  padding: 2px 6px;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.btn_link:hover {
+  opacity: 0.8;
+}
+
+.btn_link.danger {
+  color: #8b1e1e;
+}
+
+/* 作成/編集/削除の中身（開閉フォーム） */
+.hidden_form {
+  display: none;
+  margin: 6px 0 8px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 8px;
+}
+
+/* チャンネルを作成 作成ボタン */
+.hidden_form button[type="submit"]{
+  font-weight: bold;
+  color: #D8D8D8;
+  background-color: #893d6f;
+  border: none;
+  border-radius: 10px;
+}
+
+.inline_form input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  margin: 4px 0;
+  border: 1px solid #999;
+  border-radius: 6px;
   background: #fff;
+}
+
+.form_actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.btn_primary {
+  background: #38624a;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn_danger {
+  background: #b84040;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn_ghost {
+  background: transparent;
+  border: 1px solid #666;
+  color: #222;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ログアウトボタンも少し余白 */
+.logout_area { margin-top: 12px; }
+
+/* サイドバーが開いているとき、PCではメインを右に逃がす */
+body.sidebar_open .main_content {
+  margin-left: 260px; /* サイドバー幅 + α */
+}
+
+/* サイドバーを開いたときだけ右にズラす(PC) */
+body.sidebar_open .toggle_btn {
+  /* ← サイドバー幅ぶん右へ */
+  left: 260px;
+}
+
+/* ------------------------- */
+/* channels.html */
+/* ------------------------- */
+/* 20250816追記 */
+/* 20250823追記 */
+.main_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
   overflow-y: auto;
+   /* サイドバーより下にする */
+  z-index: 1;
+}
+
+.main_content img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  /* 画像を縮小すると変形回避 */
+}
+
+.main_content h1 {
+  font-size: 32px;
+  margin-top: 30px;
+}
+
+.main_content p {
+  font-size: 20px;
+  text-align: center;
+  color: #472A2A;
+}
+
+.main_content li {
+  font-size: 16px;
+  color: #472A2A;
+}
+
+.main_content span {
+  color: #893d6f;
+}
+
+/* サイドバー内にボタンぶんの空きを確保（重なり回避） */
+.sidebar {
+  padding-top: 64px; 
 }
 
 /* 非表示時 */
@@ -163,14 +375,21 @@ form input[type="text"]:focus {
   transform: translateX(-100%);
 }
 
-/* 開閉ボタン */
+/* 開閉ボタン 固定*/
 .toggle_btn {
+  color: #D8D8D8;
+  background-color: #472A2A;
+  border: none;
+  box-shadow: 2px 2px 4px gray;
+  border-radius: 20px;
   position: fixed;
   top: 10px;
-  left: 260px;
+  left: 10px;
   font-size: 15px;
+  font-weight: bold;
   padding: 8px 12px;
-  z-index: 1000;
+  z-index: 2100;
+  opacity: 0.9;
 }
 
 /* 折り畳みフォームの非表示 */
@@ -215,7 +434,7 @@ form input[type="text"]:focus {
 .channel_title {
   font-size: 18px;
   font-weight: 700;
-  margin:0;
+  margin: 0;
   text-align: center;
 }
 
@@ -235,7 +454,7 @@ form input[type="text"]:focus {
 }
 
 /* 20250822追記 */
-.profile_box{
+.profile_box {
   display: flex;
   flex-direction: column;
 }
@@ -283,14 +502,6 @@ form input[type="text"]:focus {
 .align_start {
   align-items: flex-start;
 }
-
-/* .my_message {
-  justify-content: flex-end;
-} */
-
-/* .other_message {
-  justify-content: flex-start;
-} */
 
 /* 20250819追記 メッセージ吹き出し共通 */
 /* バブル内右下に小ボタンを置くための下余白を確保 */
@@ -353,7 +564,7 @@ form input[type="text"]:focus {
 }
 
 /* 0250822追記 いいねボタンとカウント数の配置整理 */
-.like_box{
+.like_box {
   display: flex;
   flex-direction: row;
 }
@@ -366,7 +577,7 @@ form input[type="text"]:focus {
 }
 
 /* 20250822追記 いいねカウンター */
-.like_count{
+.like_count {
   font-size: 14px;
   color: #893d6f;
   padding: 6px;
@@ -407,7 +618,7 @@ form input[type="text"]:focus {
 }
 
 /* チャットを始める */
-.send_box p{
+.send_box p {
   color: #438362;
 }
 
@@ -452,7 +663,7 @@ form input[type="text"]:focus {
   border-radius: 10px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
   padding: 16px;
-  z-index: 1000;
+  z-index: 2300;
   width: 90%;
   max-width: 300px;
 }
@@ -510,20 +721,49 @@ form input[type="text"]:focus {
   }
 
   .sidebar {
+    width: 82vw;
+    /* 画面の約8割幅 */
     transform: translateX(-100%);
+    /* 既定は隠す */
   }
 
-  .sidebar.show {
-    transform: translateX(0);
-  }
-
-  .toggle-btn {
-    left: 10px;
-  }
-
-  .main-content {
+  body.sidebar_open .main_content {
     margin-left: 0;
+    /* モバイルは重ねる（オーバーレイ） */
   }
+
+  .channel_item {
+    padding: 8px 4px;
+  }
+
+  .btn_link {
+    font-size: 16px;
+  }
+
+  /* 少し大きめ（高齢者配慮） */
+  .inline_form input[type="text"] {
+    font-size: 16px;
+  }
+
+  .inline_form input[type="text"] { font-size: 16px; } /* iOSズーム対策 */
+
+/* 視認性を少しだけ底上げ */
+  body {
+  line-height: 1.6;
+}
+
+.sidebar.show {
+  transform: translateX(0);
+}
+
+/* 念のため、狭い横幅では常に 10px に戻す（保険） */
+.toggle_button, body.sidebar_open .toggle_btn {
+  left: 10px;
+}
+
+.main_content {
+  margin-left: 0;
+}
 }
 
 /* スマーフォン(480px以下) */
@@ -547,6 +787,12 @@ form input[type="text"]:focus {
   form input[type="submit"] {
     padding: 10px 20px;
     /* ボタン幅を少し小さく */
+  }
+
+  /* 念のため、狭い横幅では常に 10px に戻す（保険） */
+.toggle_btn,
+  body.sidebar_open .toggle_btn { 
+    left: 10px;
   }
 
   /* 20250819追記 */
