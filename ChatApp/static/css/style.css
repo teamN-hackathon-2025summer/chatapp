@@ -144,6 +144,7 @@ form input[type="text"]:focus {
   overflow-y: auto;
   font-size: 16px;
   transition: transform 0.3 ease;
+  z-index: 1000;          /* 前面に表示（大きい値ほど前に来る）ここを追加したよ */
 }
 
 .sidebar li {
@@ -166,10 +167,13 @@ form input[type="text"]:focus {
 /* 開閉ボタン */
 .toggle_btn {
   position: fixed;
-  top: 10px;
+  top: 5px;
+  /*top: 10px;*/
   left: 260px;
-  font-size: 15px;
-  padding: 8px 12px;
+  font-size: 8px;
+  /*font-size: 15px;*/ 
+  padding: 4px 8px; 
+  /*padding: 8px 12px;*/
   z-index: 1000;
 }
 

@@ -3,11 +3,18 @@
 <!-- サイドバー+メイン横並びさせるためのクラス -->
 <div class="chat_wrapper">
 <!-- サイドバーコンポーネントを追加する記述 -->
-  {% include "components/sidebar.html" %}
+  {% include "components/sidebar.html" %}<!--いるのかな？-->
   <!-- メインコンテンツ -->
   <div class="main_content">
     <h1>ようこそ</h1>
     <p>ここにチャンネルの説明や案内を表示できます。</p>
+    <ul>
+    {% for ch in channels %}
+     <li>
+       <a href="{{ url_for('detail', cid=ch['id']) }}">{{ ch['name'] }}</a>
+     </li>
+    {%endfor%}
+    </ul>
   </div>
 </div>
 {% endblock %}

@@ -238,7 +238,6 @@ def like_function(cid,message_id):
         Like.like_insert(uid,message_id)
     
     return redirect(url_for('detail', cid=cid))
-        
 
 
 @app.errorhandler(404)
