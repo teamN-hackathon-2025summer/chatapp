@@ -56,31 +56,31 @@ document.addEventListener("DOMContentLoaded", () => {
             // closeMobile();
         }
     });
+});
 
-    // 折り畳み（開閉）フォーム：開く
-    document.querySelectorAll(".toggle_form_btn, .btn_link, .danger").forEach(button => {
-        button.addEventListener("click", () => {
-            const targetId = button.getAttribute("data-target");
-            if (!targetId) return;
-            const targetForm = document.getElementById(targetId);
-            if (targetForm) {
-                const showing = targetForm.style.display === "block";
-                targetForm.style.display = showing ? "none" : "block";
-                targetForm.setAttribute("aria-hidden", showing ? "true" : "false");
-            }
-        });
+// チャンネル作成フォーム：開く
+document.querySelectorAll(".toggle_form_btn, .btn_link, .danger").forEach(button => {
+    button.addEventListener("click", () => {
+        const targetId = button.getAttribute("data-target");
+        if (!targetId) return;
+        const targetForm = document.getElementById(targetId);
+        if (targetForm) {
+            const showing = targetForm.style.display === "block";
+            targetForm.style.display = showing ? "none" : "block";
+            targetForm.setAttribute("aria-hidden", showing ? "true" : "false");
+        }
     });
+});
 
-    // 折り畳み（開閉）フォーム：閉じる
-    document.querySelectorAll(".close_btn").forEach(button => {
-        button.addEventListener("click", () => {
-            const targetId = button.getAttribute("data-target");
-            if (!targetId) return;
-            const targetForm = document.getElementById(targetId);
-            if (targetForm) {
-                targetForm.style.display = "none";
-                targetForm.setAttribute("aria-hidden", "true");
-            }
-        });
+// フォーム：閉じるボタン
+document.querySelectorAll(".close_btn").forEach(button => {
+    button.addEventListener("click", () => {
+        const targetId = button.getAttribute("data-target");
+        if (!targetId) return;
+        const targetForm = document.getElementById(targetId);
+        if (targetForm) {
+            targetForm.style.display = "none";
+            targetForm.setAttribute("aria-hidden", "true");
+        }
     });
 });

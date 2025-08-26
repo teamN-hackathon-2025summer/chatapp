@@ -29,6 +29,17 @@ h1 {
   text-align: center;
 }
 
+/* 20250826 メインにアイコンを追加 */
+.main_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* メインのアイコンサイズ */
+.main_wrapper img {
+  width: 30%;
+}
 
 /* main.html login.html signup.html共通 */
 .form_box {
@@ -74,6 +85,23 @@ form input[type="submit"] {
   cursor: pointer;
 }
 
+.main-btn {
+  padding: 12px 12px;
+  background-color: #438362;
+  /*ボタンの色*/
+  border: none;
+  border-radius: 20px;
+  /* ボタンの丸み */
+  color: #D8D8D8;
+  /*ボタンの文字色*/
+  font-size: 15px;
+  /* ボタン文字サイズ大きめ */
+  font-weight: bold;
+  box-shadow: 2px 2px 4px gray;
+  cursor: pointer;
+}
+
+
 /* ボタンにカーソルを合わせると色が変わる */
 .a_button:hover,
 form input[type="submit"]:hover {
@@ -111,14 +139,10 @@ form input[type="text"]:focus {
   background-color: #ffff80;
 }
 
-.login_container{
+.login_container {
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.main-btn{
-  
 }
 
 /* signup.html login.html エラーメッセージ*/
@@ -138,7 +162,6 @@ form input[type="text"]:focus {
 /* channels.html */
 /* サイドバー 20250816変更と追記 */
 .chat_wrapper {
-  display: flex;
   height: 100vh;
   /* 全画面に広げる */
 }
@@ -149,7 +172,7 @@ form input[type="text"]:focus {
 /* 20250816変更と追記 */
 /* 20250823変更と追記 */
 .sidebar {
-  width: 250px;
+  width: 400px;
   background: #BCA881;
   padding: 10px 12px;
   position: fixed;
@@ -162,6 +185,18 @@ form input[type="text"]:focus {
   /* 浮き出る対策 サイドバーを最前面に配置 */
   z-index: 2000;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  /* サイドバー内にボタンぶんの空きを確保（重なり回避） */
+  padding-top: 64px;
+}
+
+/* channnels.htmlでサイドメニュー時 */
+.sidemanu_container {
+  width: 400px;
+  background: #BCA881;
+  border-radius: 20px;
+  padding: 10px 12px;
+  overflow-y: auto;
+  font-size: 16px;
 }
 
 /* デフォルトでPCは表示、モバイルは非表示にしたい場合はJSで制御 */
@@ -178,7 +213,7 @@ form input[type="text"]:focus {
 }
 
 /* チャンネル作成ボタン */
-.toggle_form_btn{
+.toggle_form_btn {
   font-weight: bold;
   color: #D8D8D8;
   background-color: #893d6f;
@@ -186,7 +221,7 @@ form input[type="text"]:focus {
 }
 
 /* ログアウトボタン */
-.logout-btn{
+.logout_btn {
   font-weight: bold;
   color: #D8D8D8;
   background-color: #666;
@@ -242,10 +277,12 @@ form input[type="text"]:focus {
 /* ボタンの見た目を控えめに（Slack風リンクボタン） */
 .btn_link {
   background: transparent;
+  color: #438362;
   border: none;
+  text-decoration: underline solid #472A2A;
+  font-weight: bold;
   padding: 2px 6px;
   cursor: pointer;
-  text-decoration: underline;
   font-size: 14px;
 }
 
@@ -267,7 +304,7 @@ form input[type="text"]:focus {
 }
 
 /* チャンネルを作成 作成ボタン */
-.hidden_form button[type="submit"]{
+.hidden_form button[type="submit"] {
   font-weight: bold;
   color: #D8D8D8;
   background-color: #893d6f;
@@ -320,11 +357,14 @@ form input[type="text"]:focus {
 }
 
 /* ログアウトボタンも少し余白 */
-.logout_area { margin-top: 12px; }
+.logout_area {
+  margin-top: 12px;
+}
 
 /* サイドバーが開いているとき、PCではメインを右に逃がす */
 body.sidebar_open .main_content {
-  margin-left: 260px; /* サイドバー幅 + α */
+  margin-left: 260px;
+  /* サイドバー幅 + α */
 }
 
 /* サイドバーを開いたときだけ右にズラす(PC) */
@@ -338,19 +378,22 @@ body.sidebar_open .toggle_btn {
 /* ------------------------- */
 /* 20250816追記 */
 /* 20250823追記 */
+.sidemanu_container {
+  width: fit-content;
+}
+
 .main_content {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px;
   overflow-y: auto;
-   /* サイドバーより下にする */
+  /* サイドバーより下にする */
   z-index: 1;
 }
 
 .main_content img {
-  width: 60%;
-  height: 60%;
+  width: 30%;
   object-fit: contain;
   /* 画像を縮小すると変形回避 */
 }
@@ -375,18 +418,8 @@ body.sidebar_open .toggle_btn {
   color: #893d6f;
 }
 
-/* サイドバー内にボタンぶんの空きを確保（重なり回避） */
-.sidebar {
-  padding-top: 64px; 
-}
-
-/* 非表示時 */
-.sidebar.hidden {
-  transform: translateX(-100%);
-}
-
 /* 開閉ボタン 固定*/
-.toggle_btn {
+.toggle_sidebar {
   color: #D8D8D8;
   background-color: #472A2A;
   border: none;
@@ -406,6 +439,7 @@ body.sidebar_open .toggle_btn {
 .hidden_form {
   display: none;
   margin-top: 5px;
+  z-index: 2300;
 }
 
 /* トグルボタン */
@@ -644,6 +678,7 @@ body.sidebar_open .toggle_btn {
 
 #send_btn {
   background-color: #438362;
+  font-weight: bold;
   color: #d3d3d3;
   padding: 8px 16px;
   border-radius: 16px;
@@ -682,6 +717,7 @@ body.sidebar_open .toggle_btn {
 #template_btn {
   background-color: #472A2A;
   color: #d3d3d3;
+  font-weight: bold;
   padding: 8px 16px;
   border-radius: 16px;
   border: none;
@@ -726,9 +762,15 @@ body.sidebar_open .toggle_btn {
     font-size: 24px;
   }
 
+  .main_wrapper img {
+    width: 50%;
+  }
+
   .form_box {
     padding: 30px 15px;
   }
+
+
 
   .sidebar {
     width: 82vw;
@@ -755,31 +797,47 @@ body.sidebar_open .toggle_btn {
     font-size: 16px;
   }
 
-  .inline_form input[type="text"] { font-size: 16px; } /* iOSズーム対策 */
+  .inline_form input[type="text"] {
+    font-size: 16px;
+  }
 
-/* 視認性を少しだけ底上げ */
+  /* iOSズーム対策 */
+
+  /* 視認性を少しだけ底上げ */
   body {
-  line-height: 1.6;
-}
+    line-height: 1.6;
+  }
 
-.sidebar.show {
-  transform: translateX(0);
-}
+  .sidebar.show {
+    transform: translateX(0);
+  }
 
-/* 念のため、狭い横幅では常に 10px に戻す（保険） */
-.toggle_button, body.sidebar_open .toggle_btn {
-  left: 10px;
-}
+  /* 念のため、狭い横幅では常に 10px に戻す（保険） */
+  .toggle_button,
+  body.sidebar_open .toggle_btn {
+    left: 10px;
+  }
 
-.main_content {
-  margin-left: 0;
-}
+  .main_content {
+    margin-left: 0;
+    max-width: 700px;
+  }
+
+  .main_content img {
+    width: 50%;
+    object-fit: contain;
+    /* 画像を縮小すると変形回避 */
+  }
 }
 
 /* スマーフォン(480px以下) */
 @media screen and (max-width:480px) {
   h1 {
     font-size: 20px;
+  }
+
+  .main_wrapper img {
+    width: 70%;
   }
 
   .form_box {
@@ -799,9 +857,15 @@ body.sidebar_open .toggle_btn {
     /* ボタン幅を少し小さく */
   }
 
+  .main_content img {
+    width: 70%;
+    object-fit: contain;
+    /* 画像を縮小すると変形回避 */
+  }
+
   /* 念のため、狭い横幅では常に 10px に戻す（保険） */
-.toggle_btn,
-  body.sidebar_open .toggle_btn { 
+  .toggle_btn,
+  body.sidebar_open .toggle_btn {
     left: 10px;
   }
 
