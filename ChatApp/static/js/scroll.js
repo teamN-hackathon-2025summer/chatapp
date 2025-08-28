@@ -1,16 +1,9 @@
-// ページが読み込まれたときと、新しいメッセージが追加されたときに自動スクロールする
 document.addEventListener("DOMContentLoaded", () => {
-  const chatMessages = document.querySelector(".chat_messages");
+  // 画像などで高さがあとから伸びても追従
+  const toBottom = () =>
+    // ページ全体のスクロール位置を最下部へ
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "auto" });
 
-  // 下までスクロールする関数
-  const scrollToBottom = () => {
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  };
+  toBottom();
 
-  // ページ読み込み時に実行
-  scrollToBottom();
-
-  // (オプション) 新しい要素が追加されたときにも実行
-  const observer = new MutationObserver(scrollToBottom);
-  observer.observe(chatMessages, { childList: true });
 });
