@@ -45,7 +45,10 @@
                     </form>
                     <!--20250821 いいね数の表示追加 -->
                     <span class="like_count">♥ {{ msg.like_count }}</span>
-                    <!--20250828追記 リアル時刻表示 -->
+                    <!--20250828追記 吹き出しの下に右寄せで固定表示（日本語・分まで） -->
+                    <time class="posted_time" datetime="{{ msg.created_at.isoformat() }}">
+                        {{ msg.created_at.strftime('%Y年%m月%d日 %H時%M分') }}
+                    </time>
                 </div>
             </div>
         </div>
@@ -77,7 +80,10 @@
                     </form>
                     <!--20250821 いいね数の表示追加 -->
                     <span class="like_count">♥ {{ msg.like_count }}</span>
-                    <!--20250828追記 リアル時刻表示 -->
+                    <!--20250828追記 吹き出しの下に右寄せで固定表示（日本語・分まで） -->
+                    <time class="posted_time" datetime="{{ msg.created_at.isoformat() }}">
+                        {{ msg.created_at.strftime('%Y年%m月%d日 %H時%M分') }}
+                    </time>
                 </div>
             </div>
         </div>

@@ -708,6 +708,21 @@ info.html
   cursor: default;
 }
 
+/* 20250829追記 日時表示*/
+.posted_time {
+  /* 行分け */
+  display: block;
+  /* 小さめで邪魔しない */
+  font-size: 0.75rem;
+  color: #555;
+  /* 吹き出しとの間隔 */
+  margin-top: 4px;
+  /* 右端揃*/
+  text-align: right;
+  /* 折り返し防止 */
+  white-space: nowrap;
+}
+
 /* 投稿フォーム */
 .send_box form {
   display: flex;

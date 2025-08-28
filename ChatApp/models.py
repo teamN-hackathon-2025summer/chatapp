@@ -193,8 +193,10 @@ class Message:
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
+                cur.execute("SET time_zone = '+09:00'")  # ← 追加（この接続の間だけJST）
+                    # 20250828 m.created_at 時刻表示追加
                 sql = """
-                SELECT id, u.uid, user_name, message
+                SELECT id, u.uid, user_name, message, m.created_at
                 FROM messages AS m
                 INNER JOIN users AS u ON m.uid = u.uid
                 WHERE cid = %s
