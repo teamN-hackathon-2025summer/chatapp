@@ -13,7 +13,7 @@
         <h2 class="channel_title">{{ channel['name'] }}</h2>
         <!-- もし説明があれば説明も表示 -->
         {% if channel['abstract'] %}
-            <p class="channel_desc">{{ channel['abstract'] }}</p>
+        <p class="channel_desc">{{ channel['abstract'] }}</p>
         {% endif %}
     </header>
     <div class="chat_messages">
@@ -26,9 +26,9 @@
                 <div class="my_icon">■</div>
                 <!-- 20250819追記 自分の名前表示 -->
                 <div class="message_meta">
-                        <!-- 自分の名前 -->
-                        {{ msg.user_name }}
-                    </div>
+                    <!-- 自分の名前 -->
+                    {{ msg.user_name }}
+                </div>
             </div>
             <!-- 20250819追記 吹き出しと削除ボタンを縦並び用 -->
             <div class="bubble_container aligin_end">
@@ -37,10 +37,16 @@
                     <!-- formで受け取ったメッセージが表示される -->
                     {{ msg.message }}
                 </div>
-                <!-- 20250819追記 自分メッセージ専用：削除ボタン -->
-                <form class="action_line" action="{{ url_for('delete_message', cid=channel['id'], message_id=msg.id) }}" method="post">
-                    <button type="submit" class="delete_btn_link" aria-label="削除">削除</button>
-                </form>
+                <!--20250827追加 横並びのいいねカウンタと削除ボタン -->
+                <div class="del_like_box">
+                    <!-- 20250819追記 自分メッセージ専用：削除ボタン -->
+                    <form class="action_line" action="{{ url_for('delete_message', cid=channel['id'], message_id=msg.id) }}" method="post">
+                        <button type="submit" class="delete_btn_link" aria-label="削除">削除</button>
+                    </form>
+                    <!--20250821 いいね数の表示追加 -->
+                    <span class="like_count">♥ {{ msg.like_count }}</span>
+                    <!--20250828追記 リアル時刻表示 -->
+                </div>
             </div>
         </div>
         {% else %}
@@ -51,10 +57,10 @@
                 <!-- 相手のアイコン -->
                 <div class="other_icon">●</div>
                 <!-- 20250819追記 相手の名前表示 -->
-                    <div class="message_meta">
-                        <!-- 相手の名前 -->
-                        {{ msg.user_name }}
-                    </div>
+                <div class="message_meta">
+                    <!-- 相手の名前 -->
+                    {{ msg.user_name }}
+                </div>
             </div>
             <!-- 20250819追記 吹き出しと削除ボタンを縦並び用 -->
             <div class="bubble_container aligin_start">
@@ -71,6 +77,7 @@
                     </form>
                     <!--20250821 いいね数の表示追加 -->
                     <span class="like_count">♥ {{ msg.like_count }}</span>
+                    <!--20250828追記 リアル時刻表示 -->
                 </div>
             </div>
         </div>
@@ -97,7 +104,7 @@
                 </ul>
             </div>
             <!-- 20250814 修正 name属性が無いとダメ-->
-            <input type="text" id="send_message" name="message" >
+            <input type="text" id="send_message" name="message">
             <!-- inputは終了タグいらない -->
             <button type="submit" id="send_btn">送信</button>
         </form>
