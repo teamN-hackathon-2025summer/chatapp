@@ -429,6 +429,21 @@ body.sidebar_open .toggle_btn {
   z-index: 1;
 }
 
+.main_content::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background: url("../../static/img/ogob.png") no-repeat center center;
+  background-size: contain;
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: -1;
+}
+
 .main_content img {
   width: 30%;
   object-fit: contain;
