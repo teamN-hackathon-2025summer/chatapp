@@ -426,7 +426,7 @@ body.sidebar_open .toggle_btn {
   padding: 10px;
   overflow-y: auto;
   /* サイドバーより下にする */
-  z-index: 1;
+  z-index: 2000;
 }
 
 .main_content::before {
@@ -441,7 +441,7 @@ body.sidebar_open .toggle_btn {
   background-size: contain;
   opacity: 0.2;
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
 }
 
 .main_content img {
