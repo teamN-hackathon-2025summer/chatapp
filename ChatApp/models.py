@@ -133,12 +133,13 @@ class Channel:
 #メッセ―ジクラス
 class Message:
     #@classmethod これはあくまでデコレーター
-    def __init__(self, id, uid, user_name, message):
+    def __init__(self, id, uid, user_name, message,created_at):
         self.id = id
         self.uid = uid
         self.user_name = user_name
         self.message = message   # デフォルトは0、あとでLikeから埋める
         self.like_count = 0
+        self.created_at=created_at
 
 
 
@@ -164,8 +165,9 @@ class Message:
         conn=db_pool.get_conn()
         try:
             with conn.cursor() as cur:
+               cur.execute("SET time_zone = '+09:00'") 
                sql = """
-                   SELECT id, u.uid, user_name, message 
+                   SELECT id, u.uid, user_name, message, created_at
                    FROM messages AS m 
                    INNER JOIN users AS u ON m.uid = u.uid 
                    WHERE cid = %s 
@@ -173,7 +175,7 @@ class Message:
                 """
                cur.execute(sql,(cid,))
                rows=cur.fetchall()          #messages=cur.fetchall()
-               return [cls(row["id"], row["uid"], row["user_name"], row["message"]) for row in rows]  #messages
+               return [cls(row["id"], row["uid"], row["user_name"], row["message"],row["created_at"]) for row in rows]  #messages
         except pymysql.Error as e:
             print(f'エラーが発生しています:{e}')
             abort(500)
