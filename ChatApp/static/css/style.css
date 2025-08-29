@@ -497,15 +497,43 @@ body.sidebar_open .toggle_btn {
   cursor: pointer;
 }
 
-/* -------------------------
-info.html 
-------------------------- */
-
-
-
 /* ------------------------- */
 /* massages.html */
 /* ------------------------- */
+
+/* チャットの背景の画像 */
+/* takaさん追記 背景にイラストを半透明にして置く */
+.chat_page {
+  position: relative;
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #C3C3C3;
+  overflow: hidden;
+}
+
+.chat_page::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background: url("../../static/img/ogob.png") no-repeat center center;
+  background-size: contain;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.chat_page>* {
+  position: relative;
+  z-index: 2;
+}
+
 
 /* チャット全体のコンテナ */
 .chat_container {
@@ -708,6 +736,21 @@ info.html
   cursor: default;
 }
 
+/* 20250829追記 日時表示*/
+.posted_time {
+  /* 行分け */
+  display: block;
+  /* 小さめで邪魔しない */
+  font-size: 0.75rem;
+  color: #555;
+  /* 吹き出しとの間隔 */
+  margin-top: 4px;
+  /* 右端揃*/
+  text-align: right;
+  /* 折り返し防止 */
+  white-space: nowrap;
+}
+
 /* 投稿フォーム */
 .send_box form {
   display: flex;
@@ -851,7 +894,7 @@ info.html
   .channel_link {
     /* 長いチャンネル名は折り返し許可 */
     white-space: normal;
-    /* ← 日本語も英語も安全に折る */
+    /* 日本語も英語も安全に折る */
     overflow-wrap: anywhere;
   }
 
@@ -891,8 +934,8 @@ info.html
 
   .main_content img {
     width: 50%;
-    object-fit: contain;
     /* 画像を縮小すると変形回避 */
+    object-fit: contain;
   }
 }
 
