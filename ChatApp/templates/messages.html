@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="chat_page">
-<!-- タイムライン部分 -->
-    <div class="chat_wrapper">
-        <!-- サイドバーコンポーネント追加する記述 -->
-        {% include "components/sidebar.html" %}
-    </div>
 
+<!-- タイムライン部分 -->
+<div class="chat_wrapper">
+    <!-- サイドバーコンポーネント追加する記述 -->
+    {% include "components/sidebar.html" %}
+</div>
+
+
+<div class="chat_page">
     <div class="chat_container">
         <!-- 20210821追記 チャンネルヘッダー ここにチャンネル名を表示-->
         <header class="channel_header" aria-label="チャンネル情報">
