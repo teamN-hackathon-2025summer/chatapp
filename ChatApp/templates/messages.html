@@ -7,113 +7,116 @@
     {% include "components/sidebar.html" %}
 </div>
 
-<div class="chat_container">
-    <!-- 20210821追記 チャンネルヘッダー ここにチャンネル名を表示-->
-    <header class="channel_header" aria-label="チャンネル情報">
-        <h2 class="channel_title">{{ channel['name'] }}</h2>
-        <!-- もし説明があれば説明も表示 -->
-        {% if channel['abstract'] %}
-        <p class="channel_desc">{{ channel['abstract'] }}</p>
-        {% endif %}
-    </header>
-    <div class="chat_messages">
-        {% for msg in messages %}
-        {% if msg.uid == uid %}
-        <!-- 自分のメッセージ -->
-        <div class="message my_message">
-            <div class="profile_box">
-                <!-- アイコン -->
-                <div class="my_icon">■</div>
-                <!-- 20250819追記 自分の名前表示 -->
-                <div class="message_meta">
-                    <!-- 自分の名前 -->
-                    {{ msg.user_name }}
+<!-- チャットの背景画像 takaさん追記-->
+<div class="chat_page">
+    <div class="chat_container">
+        <!-- 20210821追記 チャンネルヘッダー ここにチャンネル名を表示-->
+        <header class="channel_header" aria-label="チャンネル情報">
+            <h2 class="channel_title">{{ channel['name'] }}</h2>
+            <!-- もし説明があれば説明も表示 -->
+            {% if channel['abstract'] %}
+            <p class="channel_desc">{{ channel['abstract'] }}</p>
+            {% endif %}
+        </header>
+        <div class="chat_messages">
+            {% for msg in messages %}
+            {% if msg.uid == uid %}
+            <!-- 自分のメッセージ -->
+            <div class="message my_message">
+                <div class="profile_box">
+                    <!-- アイコン -->
+                    <div class="my_icon">■</div>
+                    <!-- 20250819追記 自分の名前表示 -->
+                    <div class="message_meta">
+                        <!-- 自分の名前 -->
+                        {{ msg.user_name }}
+                    </div>
+                </div>
+                <!-- 20250819追記 吹き出しと削除ボタンを縦並び用 -->
+                <div class="bubble_container aligin_end">
+                    <!-- 吹き出し -->
+                    <div class="my_bubble">
+                        <!-- formで受け取ったメッセージが表示される -->
+                        {{ msg.message }}
+                    </div>
+                    <!--20250827追加 横並びのいいねカウンタと削除ボタン -->
+                    <div class="del_like_box">
+                        <!-- 20250819追記 自分メッセージ専用：削除ボタン -->
+                        <form class="action_line" action="{{ url_for('delete_message', cid=channel['id'], message_id=msg.id) }}" method="post">
+                            <button type="submit" class="delete_btn_link" aria-label="削除">削除</button>
+                        </form>
+                        <!--20250821 いいね数の表示追加 -->
+                        <span class="like_count">♥ {{ msg.like_count }}</span>
+                        <!--20250828追記 吹き出しの下に右寄せで固定表示（日本語・分まで） -->
+                        <time class="posted_time" datetime="{{ msg.created_at.isoformat() }}">
+                            {{ msg.created_at.strftime('%Y年%m月%d日 %H時%M分') }}
+                        </time>
+                    </div>
                 </div>
             </div>
-            <!-- 20250819追記 吹き出しと削除ボタンを縦並び用 -->
-            <div class="bubble_container aligin_end">
-                <!-- 吹き出し -->
-                <div class="my_bubble">
-                    <!-- formで受け取ったメッセージが表示される -->
-                    {{ msg.message }}
+            {% else %}
+    
+            <!-- 相手のメッセージ -->
+            <div class="message other_message">
+                <div class="profile_box">
+                    <!-- 相手のアイコン -->
+                    <div class="other_icon">●</div>
+                    <!-- 20250819追記 相手の名前表示 -->
+                    <div class="message_meta">
+                        <!-- 相手の名前 -->
+                        {{ msg.user_name }}
+                    </div>
                 </div>
-                <!--20250827追加 横並びのいいねカウンタと削除ボタン -->
-                <div class="del_like_box">
-                    <!-- 20250819追記 自分メッセージ専用：削除ボタン -->
-                    <form class="action_line" action="{{ url_for('delete_message', cid=channel['id'], message_id=msg.id) }}" method="post">
-                        <button type="submit" class="delete_btn_link" aria-label="削除">削除</button>
-                    </form>
-                    <!--20250821 いいね数の表示追加 -->
-                    <span class="like_count">♥ {{ msg.like_count }}</span>
-                    <!--20250828追記 吹き出しの下に右寄せで固定表示（日本語・分まで） -->
-                    <time class="posted_time" datetime="{{ msg.created_at.isoformat() }}">
-                        {{ msg.created_at.strftime('%Y年%m月%d日 %H時%M分') }}
-                    </time>
+                <!-- 20250819追記 吹き出しと削除ボタンを縦並び用 -->
+                <div class="bubble_container aligin_start">
+                    <!-- 相手の吹き出し -->
+                    <div class="other_bubble">
+                        {{ msg.message }}
+                    </div>
+                    <!-- 20250819追記 相手メッセージ専用：いいねボタン（既に押してたら無効化） jinja2テンプレートの記述は仮-->
+                    <div class="like_box">
+                        <form class="action_line" action="{{ url_for('like_function', cid=channel['id'], message_id=msg.id) }}" method="post">
+                            <button type="submit" class="like_btn_link">
+                                いいね
+                            </button>
+                        </form>
+                        <!--20250821 いいね数の表示追加 -->
+                        <span class="like_count">♥ {{ msg.like_count }}</span>
+                        <!--20250828追記 吹き出しの下に右寄せで固定表示（日本語・分まで） -->
+                        <time class="posted_time" datetime="{{ msg.created_at.isoformat() }}">
+                            {{ msg.created_at.strftime('%Y年%m月%d日 %H時%M分') }}
+                        </time>
+                    </div>
                 </div>
             </div>
+            {% endif %}
+            {% endfor %}
         </div>
-        {% else %}
-
-        <!-- 相手のメッセージ -->
-        <div class="message other_message">
-            <div class="profile_box">
-                <!-- 相手のアイコン -->
-                <div class="other_icon">●</div>
-                <!-- 20250819追記 相手の名前表示 -->
-                <div class="message_meta">
-                    <!-- 相手の名前 -->
-                    {{ msg.user_name }}
+    
+        <!-- テキスト入力、送信ボタン、定型文ボタン -->
+        <div class="send_box">
+            <p>▼チャットを始める</p>
+            <!-- このformが送信されるとapp.pyで記述したcreate_message関数が呼び出される -->
+            <!-- 20250814 修正 -->
+            <form action="{{ url_for('create_message' , cid=channel['id']) }}" method="post">
+                <!-- name="message"に入れたテキストが request.form.get("message")で受け取られ投稿される -->
+                <button type="button" id="template_btn">定型文</button>
+    
+                <!-- 定型文ポップアップ -->
+                <div id="template_popup">
+                    <button class="close_btn">✕閉じる</button>
+                    <ul>
+                        <li class="template_text">おはようございます</li>
+                        <li class="template_text">元気ですか？</li>
+                        <li class="template_text">助けてください</li>
+                    </ul>
                 </div>
-            </div>
-            <!-- 20250819追記 吹き出しと削除ボタンを縦並び用 -->
-            <div class="bubble_container aligin_start">
-                <!-- 相手の吹き出し -->
-                <div class="other_bubble">
-                    {{ msg.message }}
-                </div>
-                <!-- 20250819追記 相手メッセージ専用：いいねボタン（既に押してたら無効化） jinja2テンプレートの記述は仮-->
-                <div class="like_box">
-                    <form class="action_line" action="{{ url_for('like_function', cid=channel['id'], message_id=msg.id) }}" method="post">
-                        <button type="submit" class="like_btn_link">
-                            いいね
-                        </button>
-                    </form>
-                    <!--20250821 いいね数の表示追加 -->
-                    <span class="like_count">♥ {{ msg.like_count }}</span>
-                    <!--20250828追記 吹き出しの下に右寄せで固定表示（日本語・分まで） -->
-                    <time class="posted_time" datetime="{{ msg.created_at.isoformat() }}">
-                        {{ msg.created_at.strftime('%Y年%m月%d日 %H時%M分') }}
-                    </time>
-                </div>
-            </div>
+                <!-- 20250814 修正 name属性が無いとダメ-->
+                <input type="text" id="send_message" name="message">
+                <!-- inputは終了タグいらない -->
+                <button type="submit" id="send_btn">送信</button>
+            </form>
         </div>
-        {% endif %}
-        {% endfor %}
-    </div>
-
-    <!-- テキスト入力、送信ボタン、定型文ボタン -->
-    <div class="send_box">
-        <p>▼チャットを始める</p>
-        <!-- このformが送信されるとapp.pyで記述したcreate_message関数が呼び出される -->
-        <!-- 20250814 修正 -->
-        <form action="{{ url_for('create_message' , cid=channel['id']) }}" method="post">
-            <!-- name="message"に入れたテキストが request.form.get("message")で受け取られ投稿される -->
-            <button type="button" id="template_btn">定型文</button>
-
-            <!-- 定型文ポップアップ -->
-            <div id="template_popup">
-                <button class="close_btn">✕閉じる</button>
-                <ul>
-                    <li class="template_text">おはようございます</li>
-                    <li class="template_text">元気ですか？</li>
-                    <li class="template_text">助けてください</li>
-                </ul>
-            </div>
-            <!-- 20250814 修正 name属性が無いとダメ-->
-            <input type="text" id="send_message" name="message">
-            <!-- inputは終了タグいらない -->
-            <button type="submit" id="send_btn">送信</button>
-        </form>
     </div>
 </div>
 {% endblock %}
