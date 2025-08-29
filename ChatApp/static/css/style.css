@@ -154,6 +154,12 @@ form input[type="text"]:focus {
   gap: 8px;
 }
 
+.signup_container{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 /* -------------------------
 signup.html login.html 
 エラーメッセージ
@@ -497,6 +503,12 @@ body.sidebar_open .toggle_btn {
   cursor: pointer;
 }
 
+.sidebar img{
+  opacity: 0.9;
+  object-fit: contain;
+  /* 画像を縮小すると変形回避 */
+}
+
 /* ------------------------- */
 /* massages.html */
 /* ------------------------- */
@@ -593,10 +605,10 @@ body.sidebar_open .toggle_btn {
 
 /* 20250822追記 自分・相手の名前表示 */
 .message_meta {
-  font-size: 11px;
+  font-size: 16px;
   margin-top: 4px;
   text-align: center;
-  opacity: .7;
+  opacity: 0.7;
 }
 
 /* 20250819追記 */
